@@ -17,7 +17,7 @@ export default function HeroSection() {
     return (
         <div className="w-full h-screen">
             <div className="absolute top-0 p-5 z-1 flex flex-col">
-                <span className="ffxiv-font ffxiv-font-shadow uppercase text-center text-[20px]">Axel's Web</span>
+                <span className="ffxiv-font ffxiv-font-shadow uppercase text-center text-[22px]">Axel's Web</span>
                 <span className="ffxiv-font text-center text-[15px]">Where the digital realm is shaped</span>
             </div>
             <Canvas camera={{position: [0, 0, 6], fov: 50}} shadows>

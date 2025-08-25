@@ -18,16 +18,16 @@ body {
 }
 
 /* Branding */
-/* Apply to the container holding the text */
 .ffxiv-font {
-  font-family: 'Noto Sans JP', sans-serif; /* Replace with your chosen font */
-  font-weight: 400; /* Regular weight for body text */
-  color: #82c6f8; /* Light gray text color */
-  letter-spacing: 0.5px; /* Slightly increased spacing for readability */
-  line-height: 1.5; /* Adequate line height for clarity */
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  -webkit-text-stroke: 1px #219af3;
+  text-stroke: 1px #219af3;
+  color: #9bd0f6;
+  letter-spacing: 0.25px;
+  line-height: 1.5;
 }
 
-/* Optional: Add a subtle text shadow for depth */
 .ffxiv-font-shadow {
-  text-shadow: 1px 1px 2px #82c6f8cc;
+  text-shadow: 1px 1px 2px #9bd0f6cc;
 }
