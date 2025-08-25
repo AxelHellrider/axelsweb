@@ -13,7 +13,7 @@ interface CrystalModelProps {
 export default function CrystalModel({ url, timerFinished, color, roughnessTarget }: CrystalModelProps) {
     const ref = useRef<THREE.Group>(null!);
     const { scene } = useGLTF(url);
-    const roughnessRef = useRef(0.01);
+    const roughnessRef = useRef(0.001);
 
     useEffect(() => {
         scene.traverse((child) => {
@@ -43,7 +43,7 @@ export default function CrystalModel({ url, timerFinished, color, roughnessTarge
         if (timerFinished) {
             if (Math.abs(roughnessRef.current - roughnessTarget) > 0.001) {
                 roughnessRef.current = parseFloat(
-                    THREE.MathUtils.lerp(roughnessRef.current, roughnessTarget, delta * 0.65).toFixed(4)
+                    THREE.MathUtils.lerp(roughnessRef.current, roughnessTarget, delta * 0.01).toFixed(4)
                 );
             }
             scene.traverse((child: any) => {
