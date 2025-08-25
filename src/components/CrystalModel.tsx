@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 
@@ -46,8 +46,12 @@ export default function CrystalModel({ url, timerFinished, color, roughnessTarge
                     THREE.MathUtils.lerp(roughnessRef.current, roughnessTarget, delta * 0.01).toFixed(4)
                 );
             }
-            scene.traverse((child: any) => {
-                if (child.isMesh && child.material) {
+            function isMesh(object: THREE.Object3D): object is THREE.Mesh {
+                return (object as THREE.Mesh).isMesh;
+            }
+
+            scene.traverse((child) => {
+                if (isMesh(child) && child.material instanceof THREE.MeshPhysicalMaterial) {
                     child.material.roughness = roughnessRef.current;
                     child.material.needsUpdate = true;
                 }
