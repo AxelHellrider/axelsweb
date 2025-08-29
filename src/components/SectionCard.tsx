@@ -13,7 +13,7 @@ interface SectionCardProps {
 export default function SectionCard({ title, description, phase = "welcome", view, onHover, onLeave }: SectionCardProps) {
     return (
         <div
-            className="p-4 rounded-lg shadow-md bg-black/30 hover:bg-black/60 transition-all cursor-pointer"
+            className="p-4 pr-14 rounded-lg shadow-md bg-blue-100/10 hover:bg-blue-300/60 transition-all cursor-pointer"
             onMouseEnter={() => onHover({ title, description, phase, view })}
             onMouseLeave={onLeave}
         >

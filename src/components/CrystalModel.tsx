@@ -56,8 +56,8 @@ export default function CrystalModel({ url, timerFinished, color, roughnessTarge
 
             roughnessRef.current = newRoughness;
 
-            scene.traverse((child) => {
-                if ((child as THREE.Mesh).isMesh && child.material instanceof THREE.MeshPhysicalMaterial) {
+            scene.traverse((child: any) => {
+                if ((child as THREE.Mesh).isMesh) {
                     child.material.roughness = roughnessRef.current;
                 }
             });
