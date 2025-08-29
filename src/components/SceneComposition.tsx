@@ -20,8 +20,8 @@ export default function SceneComposition({timerFinished, enablePostProcessing = 
             <CrystalModel
                 url="/models/crystal3.glb"
                 timerFinished={timerFinished}
-                color="#fff"
-                roughnessTarget={0.25}
+                color="#000"
+                roughnessTarget={0.15}
             />
 
             {/* Particle background */}

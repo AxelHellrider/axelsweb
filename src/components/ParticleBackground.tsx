@@ -12,7 +12,7 @@ export default function ParticleBackground({ enabled }: ParticleBackgroundProps)
     // Generate random particle positions
     const positions = useMemo(() => {
         const arr = [];
-        const count = 2000;
+        const count = 1000;
         for (let i = 0; i < count; i++) {
             arr.push(
                 (Math.random() - 0.5) * 40, // x
@@ -23,7 +23,7 @@ export default function ParticleBackground({ enabled }: ParticleBackgroundProps)
         return new Float32Array(arr);
     }, []);
 
-    useFrame((state, delta) => {
+    useFrame((_, delta) => {
         if (pointsRef.current && enabled) {
             pointsRef.current.rotation.y += delta * 0.02; // slow rotation
         }
@@ -37,7 +37,7 @@ export default function ParticleBackground({ enabled }: ParticleBackgroundProps)
                     args={[positions, 3]}
                 />
             </bufferGeometry>
-            <pointsMaterial color={0x88aaff} size={0.05} sizeAttenuation />
+            <pointsMaterial color={0x88aaff} size={0.025} sizeAttenuation />
         </points>
     );
 }

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 
@@ -14,6 +14,7 @@ export default function CrystalModel({ url, timerFinished, color, roughnessTarge
     const ref = useRef<THREE.Group>(null!);
     const { scene } = useGLTF(url);
     const roughnessRef = useRef(0.001);
+    const [reachedTarget, setReachedTarget] = useState(false);
 
     useEffect(() => {
         scene.traverse((child) => {
@@ -40,20 +41,24 @@ export default function CrystalModel({ url, timerFinished, color, roughnessTarge
             ref.current.position.y = Math.sin(t * 0.5) * 0.2;
         }
 
-        if (timerFinished) {
-            if (Math.abs(roughnessRef.current - roughnessTarget) > 0.001) {
-                roughnessRef.current = parseFloat(
-                    THREE.MathUtils.lerp(roughnessRef.current, roughnessTarget, delta * 0.01).toFixed(4)
-                );
-            }
-            function isMesh(object: THREE.Object3D): object is THREE.Mesh {
-                return (object as THREE.Mesh).isMesh;
+        if (timerFinished && !reachedTarget) {
+            let newRoughness = THREE.MathUtils.lerp(
+                roughnessRef.current,
+                roughnessTarget,
+                delta * 0.5 // faster convergence than 0.01
+            );
+
+            // clamp and stop once reached
+            if (Math.abs(newRoughness - roughnessTarget) < 0.0005) {
+                newRoughness = roughnessTarget;
+                setReachedTarget(true);
             }
 
+            roughnessRef.current = newRoughness;
+
             scene.traverse((child) => {
-                if (isMesh(child) && child.material instanceof THREE.MeshPhysicalMaterial) {
+                if ((child as THREE.Mesh).isMesh && child.material instanceof THREE.MeshPhysicalMaterial) {
                     child.material.roughness = roughnessRef.current;
-                    child.material.needsUpdate = true;
                 }
             });
         }

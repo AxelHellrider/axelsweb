@@ -4,6 +4,8 @@
 :root {
   --background: #000;
   --foreground: #171717;
+  --dialog-bg: #dcd1a3;
+  --character-bg: #5e1d00;
 }
 
 body {
@@ -14,7 +16,6 @@ body {
 
 /* Branding */
 .ffxiv-font {
-  font-family: 'Noto Sans JP', sans-serif;
   font-weight: 400;
   -webkit-text-stroke: 1px #006cbd;
   text-stroke: 1px #006cbd;
@@ -25,4 +26,46 @@ body {
 
 .ffxiv-font-shadow {
   text-shadow: 1px 1px 2px #9bd0f6cc;
+}
+
+/* Dialog Layout */
+.welcome-dialog {
+  background: var(--dialog-bg);
+  color: var(--foreground);
+  border-radius: 8px;
+  animation: fade-in 2s ease-in;
+  letter-spacing: 0.25px;
+  line-height: 1.5;
+}
+
+.character-title {
+  background: linear-gradient(12deg, var(--foreground) 0%, transparent 60%);
+  color: var(--color-white);
+  border-radius: 6px;
+  padding: 4px 8px;
+  width: 50%;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Floating animation */
+.float {
+  animation: float 1.75s infinite linear;
+}
+@keyframes float {
+  0% {
+    transform: translateY(1.25px);
+  }
+  50% {
+    transform: translateY(-1.25px);
+  }
+  100% {
+    transform: translateY(1.25px);
+  }
 }
