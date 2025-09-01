@@ -34,8 +34,13 @@ const cardVariants = {
 
 
 export default function HeroSection() {
-    const registry: Record<string, React.ComponentType<any>> = {
+    type ViewKey = "menu" | "about" | "portfolio" | "contact";
+    type ViewRegistry = Record<string, React.ComponentType<object>>;
+
+    const registry: ViewRegistry = {
+        // @ts-ignore
         about: AboutView,
+        // @ts-ignore
         portfolio: PortfolioView,
     };
 
@@ -53,12 +58,12 @@ export default function HeroSection() {
     }, []);
 
     const cards = [
-        { title: "Portfolio", description: "Explore my works.", view: "portfolio" },
-        { title: "Contact", description: "Get in touch.", view: "contact" },
-        { title: "About", description: "Learn more.", view: "about" },
+        { title: "Portfolio", description: "Explore my works.", view: "portfolio" as ViewKey },
+        { title: "Contact", description: "Get in touch.", view: "contact" as ViewKey },
+        { title: "About", description: "Learn more.", view: "about" as ViewKey },
     ];
 
-    let div = <>
+    const div = <>
         <div className="w-full h-full relative">
             {/* Dialog */}
             {currentView === "menu" && (
@@ -86,7 +91,7 @@ export default function HeroSection() {
                                     view={c.view}
                                     onHover={(data) => setHovered(data)}
                                     onLeave={() => setHovered(null)}
-                                    fn={() => setCurrentView(c.view as any)}
+                                    fn={() => setCurrentView(c.view as "about" | "portfolio" | "contact")}
                                 />
                             </motion.div>
                         ))}
