@@ -38,9 +38,9 @@ export default function HeroSection() {
     type ViewRegistry = Record<string, React.ComponentType<object>>;
 
     const registry: ViewRegistry = {
-        // @ts-expect-error
+        // @ts-expect-error due to type
         about: AboutView,
-        // @ts-expect-error
+        // @ts-expect-error due to type
         portfolio: PortfolioView,
     };
 
