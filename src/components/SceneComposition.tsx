@@ -12,16 +12,14 @@ export default function SceneComposition({timerFinished, enablePostProcessing = 
     return (
         <>
             {/* Lights */}
-            <ambientLight intensity={0.2} />
-            <directionalLight position={[10, 3.4, 0]} intensity={1.5} color="#88aaff" />
-            <directionalLight position={[-10, -3.4, 0]} intensity={1.5} color="#77d8ce" />
+            <ambientLight intensity={10} />
+            <directionalLight position={[10, 3.4, 0]} intensity={1000} color="#ffffff" />
+            <directionalLight position={[-10, -3.4, 0]} intensity={1000} color="#ffffff" />
 
             {/* Crystal */}
             <CrystalModel
-                url="/models/crystal3.glb"
+                url="/models/crystal4.glb"
                 timerFinished={timerFinished}
-                color="#000"
-                roughnessTarget={0.15}
             />
 
             {/* Particle background */}

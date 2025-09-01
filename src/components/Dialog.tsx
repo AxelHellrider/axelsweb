@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
 
-interface WelcomeDialogProps {
+interface DialogProps {
     hovered: { title: string; description: string } | null;
 }
 
-export default function WelcomeDialog({ hovered }: WelcomeDialogProps) {
+export default function Dialog({ hovered }: DialogProps) {
     return (
         <div className="relative flex flex-col p-5 welcome-dialog">
             {hovered ? (
