@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {ComponentType, useEffect, useState} from "react";
 import { Canvas } from "@react-three/fiber";
 import { motion, AnimatePresence } from "framer-motion";
 import SceneComposition from "./SceneComposition";
@@ -11,7 +11,7 @@ import SectionCard from "@/components/SectionCard";
 import AboutView from "@/views/AboutView";
 import PortfolioView from "@/views/PortfolioView";
 import ViewsHost from "@/views/ViewsHost";
-import { ViewType } from "@/views/ViewTypes";
+import {ViewProps, ViewType} from "@/views/ViewTypes";
 
 /** Container and card animations */
 const containerVariants = {
@@ -35,7 +35,9 @@ const cardVariants = {
 
 export default function HeroSection() {
     type ViewKey = "menu" | "about" | "portfolio" | "contact";
-    type ViewRegistry = Record<string, React.ComponentType<object>>;
+    type ViewRegistry = {
+        [key in ViewType]: ComponentType<ViewProps>;
+    };
 
     const EmptyView: React.FC = () => null;
 
