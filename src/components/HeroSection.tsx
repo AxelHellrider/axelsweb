@@ -37,11 +37,13 @@ export default function HeroSection() {
     type ViewKey = "menu" | "about" | "portfolio" | "contact";
     type ViewRegistry = Record<string, React.ComponentType<object>>;
 
+    const EmptyView: React.FC = () => null;
+
     const registry: ViewRegistry = {
-        // @ts-expect-error due to type
-        about: AboutView,
-        // @ts-expect-error due to type
-        portfolio: PortfolioView,
+        'menu': EmptyView,
+        'about': AboutView,
+        'portfolio': PortfolioView,
+        'contact': EmptyView,
     };
 
     const [timerFinished, setTimerFinished] = useState(false);

@@ -1,4 +1,4 @@
-export type ViewType= "menu" | "about" | "projects" | "contact";
+export type ViewType= "menu" | "about" | "portfolio" | "contact";
 
 export interface ViewProps {
     onBack: () => void;

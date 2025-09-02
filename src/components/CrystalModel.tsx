@@ -6,11 +6,10 @@ import { useGLTF } from "@react-three/drei";
 interface CrystalModelProps {
     url: string;
     timerFinished: boolean;
-    color: string;
-    roughnessTarget: number;
+    color?: string;
 }
 
-export default function CrystalModel({ url, timerFinished, color }: CrystalModelProps) {
+export default function CrystalModel({ url, timerFinished, color = '#000'}: CrystalModelProps) {
     const ref = useRef<THREE.Group>(null!);
     const { scene } = useGLTF(url);
 
