@@ -147,19 +147,19 @@ export default function SceneComposition({timerFinished, enablePostProcessing = 
                         radialModulation={true}
                         modulationOffset={0.25}
                     />
-                    {timerFinished && (
+                    {timerFinished ? (
                         <GodRays
                             sun={sunRef}
                             blendFunction={BlendFunction.SCREEN}
                             samples={10}
                             density={0.6}
-                            decay={0.2}
-                            weight={0.46}
-                            exposure={0.46}
-                            clampMax={0.5}
+                            decay={0.92}
+                            weight={0.6}
+                            exposure={0.6}
+                            clampMax={1}
                             blur={true}
                         />
-                    )}
+                    ) : null}
                 </EffectComposer>
             )}
         </scene>
