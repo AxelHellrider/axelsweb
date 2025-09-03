@@ -12,6 +12,7 @@ import AboutView from "@/views/AboutView";
 import PortfolioView from "@/views/PortfolioView";
 import ViewsHost from "@/views/ViewsHost";
 import {ViewProps, ViewType} from "@/views/ViewTypes";
+import {Environment} from "@react-three/drei";
 
 /** Container and card animations */
 const containerVariants = {
@@ -116,6 +117,7 @@ export default function HeroSection() {
             {/* 3D Canvas */}
             <Canvas camera={{position: [0, 0, 6], fov: 50}} shadows>
                 <color attach="background" args={["#000"]}/>
+                {/*<Environment preset={"night"} background={false}/>*/}
                 <SceneComposition timerFinished={timerFinished} enablePostProcessing={!isMobile}/>
             </Canvas>
         </div>

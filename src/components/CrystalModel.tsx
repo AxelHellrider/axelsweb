@@ -1,35 +1,16 @@
 import * as THREE from "three";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 
 interface CrystalModelProps {
     url: string;
     timerFinished: boolean;
-    color?: string;
 }
 
-export default function CrystalModel({ url, timerFinished, color = '#000'}: CrystalModelProps) {
+export default function CrystalModel({ url, timerFinished}: CrystalModelProps) {
     const ref = useRef<THREE.Group>(null!);
     const { scene } = useGLTF(url);
-
-    useEffect(() => {
-        scene.traverse((child) => {
-            if ((child as THREE.Mesh).isMesh) {
-                const mesh = child as THREE.Mesh;
-                mesh.material = new THREE.MeshPhysicalMaterial({
-                    color: new THREE.Color(color),
-                    roughness: 0.01,
-                    metalness: 0,
-                    transmission: 1,
-                    thickness: 1.5,
-                    clearcoat: 1,
-                    clearcoatRoughness: 0.01,
-                    ior: 1.55,
-                });
-            }
-        });
-    }, [scene, color]);
 
     useFrame((state, delta) => {
         const t = state.clock.getElapsedTime();
@@ -39,5 +20,5 @@ export default function CrystalModel({ url, timerFinished, color = '#000'}: Crys
         }
     });
 
-    return <primitive ref={ref} object={scene} />;
+    return <primitive ref={ref} object={scene} name={"crystal"}/>;
 }

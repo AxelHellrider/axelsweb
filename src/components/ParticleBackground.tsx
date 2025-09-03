@@ -1,5 +1,5 @@
 import React, {useRef, useMemo} from "react";
-import { Points } from "three";
+import {AdditiveBlending, Points} from "three";
 import { useFrame } from "@react-three/fiber";
 
 interface ParticleBackgroundProps {
@@ -37,7 +37,7 @@ export default function ParticleBackground({ enabled }: ParticleBackgroundProps)
                     args={[positions, 3]}
                 />
             </bufferGeometry>
-            <pointsMaterial color={0x88aaff} size={0.0125} sizeAttenuation />
+            <pointsMaterial color={0x88aaff} size={0.025} sizeAttenuation={true} transparent={true} blending={AdditiveBlending} />
         </points>
     );
 }
