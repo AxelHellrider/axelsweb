@@ -147,7 +147,7 @@ export default function SceneComposition({timerFinished, enablePostProcessing = 
                         radialModulation={true}
                         modulationOffset={0.25}
                     />
-                    {timerFinished ?? (
+                    {timerFinished && (
                         <GodRays
                             sun={sunRef}
                             blendFunction={BlendFunction.SCREEN}
