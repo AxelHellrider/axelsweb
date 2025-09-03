@@ -64,8 +64,6 @@ export default function SceneComposition({timerFinished, enablePostProcessing = 
 
     return (
         <scene ref={sceneRef}>
-            {/* Environment map for realistic reflections */}
-            <Environment files="/models/gradient_output2.hdr" background={false} />
             
             {/* Point light inside crystal for internal glow */}
             <pointLight
@@ -79,7 +77,7 @@ export default function SceneComposition({timerFinished, enablePostProcessing = 
             
             {/* Invisible mesh for GodRays light source */}
             <mesh ref={sunRef} position={[0, 0, 0]}>
-                <sphereGeometry args={[0.0125, 16, 16]} />
+                <sphereGeometry args={[0.0125, 8, 8]} />
                 <meshBasicMaterial color="#ffffff" transparent opacity={0} />
             </mesh>
             
@@ -99,9 +97,9 @@ export default function SceneComposition({timerFinished, enablePostProcessing = 
             <spotLight
                 ref={spot2}
                 position={[-2, 0, 3]}
-                angle={0.7}
+                angle={0.8}
                 penumbra={0.3}
-                intensity={12}
+                intensity={15}
                 color={"#0b387a"}
                 distance={50}
                 castShadow
@@ -111,9 +109,9 @@ export default function SceneComposition({timerFinished, enablePostProcessing = 
             <spotLight
                 ref={spot3}
                 position={[3, -2.5, 3]}
-                angle={0.6}
+                angle={1.5}
                 penumbra={0.2}
-                intensity={14}
+                intensity={15}
                 color={"#14c6c6"}
                 distance={50}
                 castShadow
@@ -147,19 +145,17 @@ export default function SceneComposition({timerFinished, enablePostProcessing = 
                         radialModulation={true}
                         modulationOffset={0.25}
                     />
-                    {timerFinished ? (
-                        <GodRays
-                            sun={sunRef}
-                            blendFunction={BlendFunction.SCREEN}
-                            samples={10}
-                            density={0.6}
-                            decay={0.92}
-                            weight={0.6}
-                            exposure={0.6}
-                            clampMax={1}
-                            blur={true}
-                        />
-                    ) : null}
+                    <GodRays
+                        sun={sunRef}
+                        blendFunction={BlendFunction.SCREEN}
+                        samples={10}
+                        density={0.6}
+                        decay={0.92}
+                        weight={timerFinished ? 0.6 : 0}
+                        exposure={timerFinished ? 0.6 : 0}
+                        clampMax={1}
+                        blur={true}
+                    />
                 </EffectComposer>
             )}
         </scene>
