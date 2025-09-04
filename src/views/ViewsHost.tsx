@@ -12,9 +12,9 @@ interface ViewsHostProps {
 }
 
 const pageVariants = {
-    initial: { opacity: 0, y: 40 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 40 },
+    initial: { opacity: 0, x: 40 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 40 },
 };
 
 export default function ViewsHost({current, onBack, registry, keepAlive = false,}: ViewsHostProps)
@@ -31,7 +31,7 @@ export default function ViewsHost({current, onBack, registry, keepAlive = false,
                         style={{
                             display: current === id ? "block" : "none",
                         }}
-                        transition={{ duration: 0.4 }}
+                        transition={{ duration: 0.6 }}
                     >
                         <Cmp onBack={onBack} />
                     </motion.div>
@@ -51,7 +51,7 @@ export default function ViewsHost({current, onBack, registry, keepAlive = false,
                     initial="initial"
                     animate="animate"
                     exit="exit"
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.6 }}
                 >
                     <Active onBack={onBack} />
                 </motion.div>

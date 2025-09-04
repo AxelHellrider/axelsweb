@@ -12,7 +12,6 @@ import AboutView from "@/views/AboutView";
 import PortfolioView from "@/views/PortfolioView";
 import ViewsHost from "@/views/ViewsHost";
 import {ViewProps, ViewType} from "@/views/ViewTypes";
-import {Environment} from "@react-three/drei";
 
 /** Container and card animations */
 const containerVariants = {
