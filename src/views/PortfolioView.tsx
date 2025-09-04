@@ -41,14 +41,17 @@ export default function PortfolioView({ onBack }: ViewProps) {
     if (explicit) return explicit;
     try {
       const url = new URL(href);
+
+      // GitHub repos special case
       if (url.hostname.includes("github.com")) {
         const [, owner, repo] = url.pathname.split("/");
         if (owner && repo) {
           return `https://opengraph.githubassets.com/1/${owner}/${repo}`;
         }
       }
-      // Basic website screenshot provider (no key). If it fails, we fallback via onError.
-      return `https://image.thum.io/get/width/1200/crop/800/${href}`;
+
+      // Call your /api/og-image route with ?url= param
+      return `/api/og-image?url=${encodeURIComponent(href)}`;
     } catch {
       return "/window.svg";
     }
@@ -83,7 +86,7 @@ export default function PortfolioView({ onBack }: ViewProps) {
                 <img
                   src={getPreviewSrc(p.href, p.previewImage)}
                   alt={`Preview image for ${p.title}`}
-                  className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-[1.02]"
+                  className="h-full w-full object-contain object-top transition duration-300 group-hover:scale-[1.02]"
                   onError={(e) => {
                     const t = e.currentTarget as HTMLImageElement;
                     t.src = "/window.svg";
@@ -111,6 +114,12 @@ export default function PortfolioView({ onBack }: ViewProps) {
           <div className={sectionCard}>
             <Items />
           </div>
+          <button
+              onClick={onBack}
+              className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)]"
+            >
+              ← Back
+            </button>
         </div>
       ) : (
         <div className="hidden md:grid grid-cols-3 gap-6 text-white px-6 py-6 transition-all duration-300 contain-parent">
