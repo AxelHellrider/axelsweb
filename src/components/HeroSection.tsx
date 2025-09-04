@@ -68,13 +68,15 @@ export default function HeroSection() {
     ];
 
     const div = <>
-        <div className="w-full h-full relative">
-            {/* Dialog */}
-            {currentView === "menu" && (
-                <div className="absolute bottom-0 w-[stretch] my-6 mx-10 md:mx-20 lg:mx-40 z-10">
-                    <Dialog hovered={hovered}/>
-                </div>
-            )}
+        <div className="w-full h-full relative isolate contain-parent">
+             {/* Dialog */}
+             {currentView === "menu" && (
+                 <div className="absolute inset-x-0 bottom-[max(env(safe-area-inset-bottom),1rem)] px-4 md:px-20 lg:px-40 z-20 pointer-events-auto">
+                     <div className="mx-auto max-w-xl">
+                         <Dialog hovered={hovered}/>
+                     </div>
+                 </div>
+             )}
 
             {/* Cards container */}
             <AnimatePresence mode="wait">

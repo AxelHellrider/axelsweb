@@ -159,7 +159,7 @@ export default function AboutView({ onBack }: ViewProps) {
   return (
     <ViewShell onBack={onBack}>
       {isMobile ? (
-        <div className="flex flex-col justify-between gap-4 p-4 text-white h-full">
+        <div className="flex flex-col overflow-auto justify-between gap-4 p-4 text-white h-full">
           <div className={sectionCard}>
             <ProfileCard size={96} />
           </div>
@@ -173,26 +173,32 @@ export default function AboutView({ onBack }: ViewProps) {
           </div>
         </div>
       ) : (
-        <div className="hidden md:flex flex-row items-start gap-6 text-white px-6 py-6">
-          <div className="w-[36%] min-w-[320px] flex flex-col gap-5">
-            <div className={sectionCard}>
-              <ProfileCard />
-            </div>
-            <div className={sectionCard}>
-              <TabBar />
-              <div className="mt-2">
-                {activeTab === 'about' && <AboutText />}
-                {activeTab === 'skills' && <SkillsPanel />}
-                {activeTab === 'experience' && <ExperiencePanel />}
-              </div>
-            </div>
-            <button
-              onClick={onBack}
-              className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)]"
-            >
-              ← Back
-            </button>
-          </div>
+        <div className="hidden md:grid grid-cols-3 gap-6 text-white px-6 py-6 transition-all duration-300 contain-parent">
+           {/* Left column */}
+           <div className="flex flex-col gap-5">
+             <div className={sectionCard}>
+               <ProfileCard />
+             </div>
+           </div>
+           {/* Center column left empty to keep crystal visually centered */}
+           <div />
+           {/* Right column */}
+           <div className="flex flex-col gap-5">
+             <div className={sectionCard}>
+               <TabBar />
+               <div className="mt-2">
+                 {activeTab === 'about' && <AboutText />}
+                 {activeTab === 'skills' && <SkillsPanel />}
+                 {activeTab === 'experience' && <ExperiencePanel />}
+               </div>
+             </div>
+             <button
+               onClick={onBack}
+               className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)]"
+             >
+               ← Back
+             </button>
+           </div>
           <div className="flex-1 h-full" />
         </div>
       )}

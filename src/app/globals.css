@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 @import "tailwindcss";
 
+/* Base reset and box sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
 :root {
   --background: #000;
   --foreground: #171717;
@@ -12,6 +21,26 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'Noto Sans JP', Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  /* Prevent scroll chaining from children to page */
+  overscroll-behavior: contain;
+}
+
+/* Media elements should never overflow their parent */
+img, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Utility: contain layout/paint to the element's box */
+.contain-layout {
+  contain: layout paint;
+}
+
+/* Utility: parent container to clip its absolutely positioned children if needed */
+.contain-parent {
+  overflow: hidden;
 }
 
 /* Branding */
@@ -46,26 +75,14 @@ body {
   width: 50%;
 }
 @keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 /* Floating animation */
-.float {
-  animation: float 1.5s infinite linear;
-}
+.float { animation: float 1.5s infinite linear; }
 @keyframes float {
-  0% {
-    transform: translateY(1.25px);
-  }
-  50% {
-    transform: translateY(-1.25px);
-  }
-  100% {
-    transform: translateY(1.25px);
-  }
+  0% { transform: translateY(1.25px); }
+  50% { transform: translateY(-1.25px); }
+  100% { transform: translateY(1.25px); }
 }

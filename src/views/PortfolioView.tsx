@@ -17,7 +17,7 @@ export default function PortfolioView({ onBack }: ViewProps) {
   const projects: Project[] = [
     {
       title: "Personal Portfolio",
-      description: "Next.js + R3F experiments and UI showcases.",
+      description: "Next.js  R3F experiments and UI showcases.",
       href: "https://axelsweb.netlify.app",
     },
     {
@@ -67,7 +67,7 @@ export default function PortfolioView({ onBack }: ViewProps) {
 
   const Items = () => (
     <div className="mt-2 max-h-[50vh] md:max-h-[55vh] overflow-y-auto pr-1">
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {projects.map((p) => (
           <a
             key={p.title}
@@ -113,11 +113,17 @@ export default function PortfolioView({ onBack }: ViewProps) {
           </div>
         </div>
       ) : (
-        <div className="hidden md:flex flex-row items-start gap-6 text-white px-6 py-6">
-          <div className="w-[36%] min-w-[320px] flex flex-col gap-5">
+        <div className="hidden md:grid grid-cols-3 gap-6 text-white px-6 py-6 transition-all duration-300 contain-parent">
+          {/* Left column */}
+          <div className="flex flex-col gap-5">
             <div className={sectionCard}>
               <Header />
             </div>
+          </div>
+          {/* Center column left empty to keep crystal visually centered */}
+          <div />
+          {/* Right column */}
+          <div className="flex flex-col gap-5">
             <div className={sectionCard}>
               <Items />
             </div>
@@ -128,7 +134,6 @@ export default function PortfolioView({ onBack }: ViewProps) {
               ← Back
             </button>
           </div>
-          <div className="flex-1 h-full" />
         </div>
       )}
     </ViewShell>
