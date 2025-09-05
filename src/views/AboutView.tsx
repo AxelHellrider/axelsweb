@@ -5,20 +5,30 @@ import MobileUtil from "@/hooks/MobileUtil";
 
 export default function AboutView({ onBack }: ViewProps) {
   const isMobile = MobileUtil(768);
-  const sectionCard = "rounded-2xl p-5 bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_30px_rgba(0,150,255,0.2)]";
+  const sectionCard = "rounded-2xl p-5 bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_30px_rgba(0,150,255,0.35)]";
 
   // Skills limited to the requested set
   const skills = [
-    { name: "React", level: 5 },
-    { name: "Next.js", level: 5 },
-    { name: "TailwindCSS", level: 5 },
-    { name: "PHP", level: 4 },
-    { name: "Phalcon PHP", level: 3 },
-    { name: "Node.js", level: 4 },
     { name: "HTML", level: 5 },
     { name: "CSS", level: 5 },
     { name: "JavaScript", level: 5 },
+    { name: "React", level: 5 },
+    { name: "Next.js", level: 5 },
+    { name: "TailwindCSS", level: 3 },
+    { name: "Sass", level: 4 },
+    { name: "PHP", level: 4 },
+    { name: "Phalcon PHP", level: 3 },
+    { name: "Node.js", level: 4 },
   ];
+
+  const skillsBrightness = [
+    "bg-sky-400/40",
+    "bg-sky-400/55",
+    "bg-sky-400/70",
+    "bg-sky-400/85",
+    "bg-sky-400/100",
+  ];
+
 
   const experience = [
     {
@@ -78,14 +88,14 @@ export default function AboutView({ onBack }: ViewProps) {
   // Panels
   const SkillsPanel = () => (
     <div className="mt-3 max-h-[50vh] md:max-h-[55vh] overflow-y-auto pr-1">
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {skills.map(s => (
           <div key={s.name} className="">
             <div className="flex items-center justify-between py-1.5 px-2 rounded-lg bg-white/5 ring-1 ring-white/10">
               <span className="text-[13px] md:text-sm text-gray-200/95">{s.name}</span>
               <div className="flex gap-1 ml-3">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <span key={i} className={`h-1.5 w-3 rounded-sm ${i < s.level ? 'bg-sky-400/90' : 'bg-white/20'}`} />
+                  <span key={i} className={`h-1.5 w-3 rounded-sm ${i < s.level ? skillsBrightness[i] : 'bg-white/20'}`} />
                 ))}
               </div>
             </div>
@@ -119,7 +129,7 @@ export default function AboutView({ onBack }: ViewProps) {
   );
 
   const ProfileCard = ({ size = 150 }: { size?: number }) => (
-    <div className="flex flex-row md:flex-col items-center md:items-start gap-4">
+    <div className="flex flex-row md:flex-col items-start md:items-center md:items-start gap-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
             className="rounded-2xl ring-2 ring-[#009dff]/60 shadow-[0_0_25px_rgba(0,150,255,0.35)]"
@@ -128,11 +138,11 @@ export default function AboutView({ onBack }: ViewProps) {
             src="/about/linkedin-profpic.jpg"
             alt="profile picture"
         />
-      <div className="flex flex-col items-stretch gap-4">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
+      <div className="flex flex-col items-stretch gap-2 md:gap-4">
+            <h2 className="text-base font-bold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent md:text-xl lg:text-2xl">
                 Alexandros Nomikos
             </h2>
-            <p className="text-sm text-gray-300/90 tracking-wide uppercase">Web Developer / Creative Coder</p>
+            <p className="text-xs md:text-sm text-gray-300/90 tracking-wide uppercase">Web Developer / Creative Coder</p>
       </div>
     </div>
   );
@@ -160,9 +170,18 @@ export default function AboutView({ onBack }: ViewProps) {
     <ViewShell onBack={onBack}>
       {isMobile ? (
         <div className="flex flex-col overflow-auto justify-between gap-4 p-4 text-white h-full">
-          <div className={sectionCard}>
-            <ProfileCard size={96} />
+          <div className="flex flex-col gap-2 items-stretch">
+            <button
+              onClick={onBack}
+              className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)]"
+            >
+              ← Back
+            </button>
+            <div className={sectionCard}>
+              <ProfileCard size={80} />
+            </div>
           </div>
+          
           <div className={sectionCard}>
             <TabBar />
             <div className="mt-2">
