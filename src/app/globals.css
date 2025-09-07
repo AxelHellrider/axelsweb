@@ -22,23 +22,19 @@ body {
   color: var(--foreground);
   font-family: 'Noto Sans JP', Arial, Helvetica, sans-serif;
   line-height: 1.5;
-  /* Prevent scroll chaining from children to page */
   overscroll-behavior: contain;
 }
 
-/* Media elements should never overflow their parent */
 img, video, canvas, svg {
   max-width: 100%;
   object-fit: fill;
   display: block;
 }
 
-/* Utility: contain layout/paint to the element's box */
 .contain-layout {
   contain: layout paint;
 }
 
-/* Utility: parent container to clip its absolutely positioned children if needed */
 .contain-parent {
   overflow: hidden;
 }
