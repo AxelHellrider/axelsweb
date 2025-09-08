@@ -2,19 +2,12 @@
 @import "tailwindcss";
 
 /* Base reset and box sizing */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
 
 :root {
   --background: #000;
-  --foreground: #171717;
-  --dialog-bg: #dcd1a3;
-  --character-bg: #5e1d00;
+  --foreground: #e5e5e5;
 }
 
 body {
@@ -27,17 +20,15 @@ body {
 
 img, video, canvas, svg {
   max-width: 100%;
-  object-fit: fill;
   display: block;
 }
 
-.contain-layout {
-  contain: layout paint;
-}
+/* Containment helpers to keep overlays bounded */
+.contain-layout { contain: layout paint; }
+.contain-parent { overflow: hidden; }
 
-.contain-parent {
-  overflow: hidden;
-}
+/* Animation helpers */
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
 
 /* Branding */
 .ffxiv-font {

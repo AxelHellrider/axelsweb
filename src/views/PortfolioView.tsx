@@ -1,6 +1,7 @@
 import ViewShell from "./ViewsShell";
 import type { ViewProps } from "./ViewTypes";
 import MobileUtil from "@/hooks/MobileUtil";
+import React, { useMemo } from "react";
 
 export default function PortfolioView({ onBack }: ViewProps) {
   const isMobile = MobileUtil(768);
@@ -13,7 +14,6 @@ export default function PortfolioView({ onBack }: ViewProps) {
     previewImage?: string; // optional explicit image override
   };
 
-  // Sample data — replace href values with your actual repos/sites.
   const projects: Project[] = [
     {
       title: "Personal Portfolio",
@@ -41,16 +41,12 @@ export default function PortfolioView({ onBack }: ViewProps) {
     if (explicit) return explicit;
     try {
       const url = new URL(href);
-
-      // GitHub repos special case
       if (url.hostname.includes("github.com")) {
         const [, owner, repo] = url.pathname.split("/");
         if (owner && repo) {
           return `https://opengraph.githubassets.com/1/${owner}/${repo}`;
         }
       }
-
-      // Call your /api/og-image route with ?url= param
       return `/api/og-image?url=${encodeURIComponent(href)}`;
     } catch {
       return "/window.svg";
@@ -104,22 +100,63 @@ export default function PortfolioView({ onBack }: ViewProps) {
     </div>
   );
 
+  // Simple coverflow-like carousel for mobile
+  const MobileCoverflow = () => {
+    const items = useMemo(() => projects, [projects]);
+    return (
+      <div className="flex flex-col gap-3">
+        <Header />
+        <div
+          className="relative -mx-4 px-4 overflow-x-auto scrollbar-hide"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
+          <div className="flex gap-4 py-2 snap-x snap-mandatory">
+            {items.map((p, idx) => (
+              <a
+                key={p.title}
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="snap-center shrink-0 w-[76vw] aspect-[16/10] rounded-2xl bg-white/5 ring-1 ring-white/10 overflow-hidden perspective-[1000px]"
+              >
+                <div className="relative w-full h-full [transform-style:preserve-3d] transition will-change-transform">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={getPreviewSrc(p.href, p.previewImage)}
+                    alt={`Preview image for ${p.title}`}
+                    className="absolute inset-0 w-full h-full object-cover [backface-visibility:hidden]"
+                    onError={(e) => {
+                      const t = e.currentTarget as HTMLImageElement;
+                      t.src = "/window.svg";
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/30" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <div className="text-sm font-semibold text-white drop-shadow">{p.title}</div>
+                    <div className="text-[11px] text-white/80 line-clamp-2">{p.description}</div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+        <button
+          onClick={onBack}
+          className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)]"
+        >
+          ← Back
+        </button>
+      </div>
+    );
+  };
+
   return (
     <ViewShell onBack={onBack}>
       {isMobile ? (
         <div className="flex flex-col gap-4 px-4 py-4 text-white">
           <div className={sectionCard}>
-            <Header />
+            <MobileCoverflow />
           </div>
-          <div className={sectionCard}>
-            <Items />
-          </div>
-          <button
-              onClick={onBack}
-              className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)]"
-            >
-              ← Back
-            </button>
         </div>
       ) : (
         <div className="hidden md:grid grid-cols-3 gap-6 text-white px-6 py-6 transition-all duration-300 contain-parent">
@@ -136,12 +173,6 @@ export default function PortfolioView({ onBack }: ViewProps) {
             <div className={sectionCard}>
               <Items />
             </div>
-            <button
-              onClick={onBack}
-              className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)]"
-            >
-              ← Back
-            </button>
           </div>
         </div>
       )}

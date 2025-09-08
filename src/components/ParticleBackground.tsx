@@ -1,32 +1,31 @@
 import React, {useRef, useMemo} from "react";
-import {AdditiveBlending, Points} from "three";
+import {AdditiveBlending, Points, type ColorRepresentation} from "three";
 import { useFrame } from "@react-three/fiber";
 
 interface ParticleBackgroundProps {
     enabled: boolean;
+    count?: number;
+    rotationSpeed?: number;
+    color?: ColorRepresentation;
+    size?: number;
 }
 
-export default function ParticleBackground({ enabled }: ParticleBackgroundProps) {
+export default function ParticleBackground({ enabled, count = 1000, rotationSpeed = 0.02, color = 0x88aaff, size = 0.025 }: ParticleBackgroundProps) {
     const pointsRef = useRef<Points>(null!);
-
-    // Generate random particle positions
     const positions = useMemo(() => {
-        const arr = [];
-        const count = 1000;
+        const arr:number[] = [];
         for (let i = 0; i < count; i++) {
             arr.push(
-                (Math.random() - 0.5) * 40, // x
-                (Math.random() - 0.5) * 40, // y
-                (Math.random() - 0.5) * 40  // z
+                (Math.random() - 0.5) * 40,
+                (Math.random() - 0.5) * 40,
+                (Math.random() - 0.5) * 40 
             );
         }
         return new Float32Array(arr);
-    }, []);
+    }, [count]);
 
     useFrame((_, delta) => {
-        if (pointsRef.current && enabled) {
-            pointsRef.current.rotation.y += delta * 0.02; // slow rotation
-        }
+        if (pointsRef.current && enabled) pointsRef.current.rotation.y += delta * rotationSpeed;
     });
 
     return (
@@ -37,7 +36,7 @@ export default function ParticleBackground({ enabled }: ParticleBackgroundProps)
                     args={[positions, 3]}
                 />
             </bufferGeometry>
-            <pointsMaterial color={0x88aaff} size={0.025} sizeAttenuation={true} transparent={true} blending={AdditiveBlending} />
+            <pointsMaterial color={color} size={size} sizeAttenuation={true} transparent={true} blending={AdditiveBlending} />
         </points>
     );
 }
