@@ -200,13 +200,13 @@ export default function PortfolioView({ onBack }: ViewProps) {
  
        return () => {
          el.removeEventListener("scroll", onScroll);
-         el.removeEventListener('pointerdown', onPointerDown as any);
-         el.removeEventListener('pointerup', onPointerUp as any);
+         el.removeEventListener('pointerdown', onPointerDown);
+         el.removeEventListener('pointerup', onPointerUp);
          window.removeEventListener("resize", update);
          if (snapTimer) window.clearTimeout(snapTimer);
          if (raf) cancelAnimationFrame(raf);
        };
-     }, []);
+     }, [CF_ENABLE_AUTOSNAP, CF_AUTOSNAP_DELAY, CF_ENABLE_AUTOPLAY, CF_AUTOPLAY_MODE, CF_AUTOPLAY_SPEED_PX_PER_S]);
       return (
        <div className="flex flex-col gap-3">
          <Header />
