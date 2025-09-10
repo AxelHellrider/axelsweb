@@ -3,7 +3,10 @@
 
 /* Base reset and box sizing */
 *, *::before, *::after { box-sizing: border-box; }
-html, body { height: 100%; }
+html, body { 
+  width: 100%;
+  height: 100svh;
+}
 
 :root {
   --background: #000;
@@ -16,11 +19,23 @@ body {
   font-family: 'Noto Sans JP', Arial, Helvetica, sans-serif;
   line-height: 1.5;
   overscroll-behavior: contain;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 img, video, canvas, svg {
   max-width: 100%;
   display: block;
+}
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Containment helpers to keep overlays bounded */

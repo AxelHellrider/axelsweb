@@ -3,14 +3,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import SceneComposition from "@/components/SceneComposition";
 import MobileUtil from "@/hooks/MobileUtil";
-import { usePathname } from "next/navigation";
+import { AdaptiveDpr } from "@react-three/drei";
 
 export default function CanvasBackground() {
   const isMobile = MobileUtil();
   const [timerFinished, setTimerFinished] = useState(false);
-  const pathname = usePathname();
-  const layout: "default" | "contact" = pathname?.startsWith("/contact") ? "contact" : "default";
-  
+
   // Determine viewport breakpoint
   const [viewport, setViewport] = useState<"mobile" | "tablet" | "desktop">("desktop");
   useEffect(() => {
@@ -44,15 +42,21 @@ export default function CanvasBackground() {
 
   return (
     <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
-      <Canvas className="absolute inset-0" camera={cameraSettings} shadows>
+      <Canvas
+        className="absolute inset-0"
+        camera={cameraSettings}
+        shadows={!isMobile}
+        dpr={isMobile ? [1, 1.25] : [1, 2]}
+        gl={{ antialias: !isMobile, powerPreference: "high-performance" }}
+      >
         <color attach="background" args={["#000"]} />
         <SceneComposition
-          compositionLayout={layout}
           timerFinished={timerFinished}
           enablePostProcessing={!isMobile}
           isMobile={isMobile}
           viewport={viewport}
         />
+        <AdaptiveDpr pixelated />
       </Canvas>
     </div>
   );

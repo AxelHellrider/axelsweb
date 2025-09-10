@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import CrystalModel from "./CrystalModel";
 import ParticleBackground from "./ParticleBackground";
 import { EffectComposer, Bloom, SSAO, ChromaticAberration, GodRays } from "@react-three/postprocessing";
@@ -11,7 +11,6 @@ import { useFrame } from "@react-three/fiber";
 interface SceneContentProps {
   timerFinished: boolean;
   enablePostProcessing?: boolean;
-  compositionLayout?: "default" | "contact";
   isMobile?: boolean;
   viewport?: "mobile" | "tablet" | "desktop";
   isHome?: boolean;
@@ -20,7 +19,6 @@ interface SceneContentProps {
 export default function SceneComposition({
   timerFinished,
   enablePostProcessing = true,
-  compositionLayout = "default",
   isMobile = false,
   viewport = "desktop",
 }: SceneContentProps) {
@@ -54,6 +52,8 @@ export default function SceneComposition({
     });
   }, []);
 
+  // Throttle subtle updates to reduce CPU on low-end devices
+  const [tick, setTick] = useState(0);
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
 
@@ -86,6 +86,8 @@ export default function SceneComposition({
       [spot1, spot2, spot3].forEach((spotRef, i) => {
         const spot = spotRef.current;
         if (!spot) return;
+        // Only update spotlight positions every other frame on mobile to reduce jank
+        if (isMobile && tick % 2 !== 0) return;
         const pos = camPos
           .clone()
           .add(right.clone().multiplyScalar(lateralOffsets[i] ?? 0))
@@ -98,19 +100,29 @@ export default function SceneComposition({
         );
         spot.target.updateMatrixWorld();
       });
+      if (isMobile) setTick((v) => (v + 1) % 60);
     }
   });
 
   // Layout and animation adjustments
   const crystalGroupRef = useRef<THREE.Group>(null!);
-  
-  const particleCount = isMobile ? 300 : 1000;
-  const particleRotation = 0.02;
+
+  // Particle and effect tuning by viewport
+  const particleCount = useMemo(() => (viewport === "mobile" ? 200 : viewport === "tablet" ? 500 : 1000), [viewport]);
+  const particleRotation = isMobile ? 0.015 : 0.02;
   const particleColor = isMobile ? 0xaad4ff : 0x88aaff; // brighter blue on mobile
   const particleSize = isMobile ? 0.03 : 0.025; // slightly bigger on mobile
 
   // Spotlight intensity tuning per device
-  const spotIntensity = isMobile ? 18 : 30;
+  const spotIntensity = isMobile ? 14 : 26;
+
+  // Post-processing quality tiers
+  const ssaoSamples = viewport === "mobile" ? 8 : viewport === "tablet" ? 16 : 30;
+  const ssaoIntensity = viewport === "mobile" ? 10 : viewport === "tablet" ? 18 : 24;
+  const bloomIntensity = viewport === "mobile" ? 0.35 : viewport === "tablet" ? 0.5 : 0.6;
+  const chromaOffset: [number, number] = viewport === "mobile" ? [0.00025, 0.00025] : [0.0005, 0.0005];
+  const godraySamples = viewport === "mobile" ? 24 : viewport === "tablet" ? 48 : 64;
+  const godrayWeights = viewport === "mobile" ? 0.35 : viewport === "tablet" ? 0.5 : 0.6;
 
   return (
     <scene ref={sceneRef}>
@@ -144,7 +156,7 @@ export default function SceneComposition({
         intensity={spotIntensity}
         color={"#a1e4fd"}
         distance={50}
-        castShadow
+        castShadow={!isMobile}
       />
 
       <spotLight
@@ -155,7 +167,7 @@ export default function SceneComposition({
         intensity={spotIntensity}
         color={"#0b387a"}
         distance={50}
-        castShadow
+        castShadow={!isMobile}
       />
 
       <spotLight
@@ -166,7 +178,7 @@ export default function SceneComposition({
         intensity={spotIntensity}
         color={"#14c6c6"}
         distance={50}
-        castShadow
+        castShadow={!isMobile}
       />
 
       {/* Particle background */}
@@ -174,36 +186,41 @@ export default function SceneComposition({
 
       {/* Enhanced Postprocessing */}
       {enablePostProcessing && (
-        <EffectComposer multisampling={4} enableNormalPass>
-          <SSAO
-            samples={timerFinished ? 30 : 15}
-            radius={0.6}
-            intensity={timerFinished ? 24 : 12}
-            luminanceInfluence={0.7}
-            color={new THREE.Color("#0000ff")}
-          />
+        <EffectComposer multisampling={isMobile ? 0 : 2} enableNormalPass={!isMobile}>
+          {!isMobile ? (
+            <SSAO
+              samples={ssaoSamples}
+              radius={0.6}
+              intensity={ssaoIntensity}
+              luminanceInfluence={0.7}
+              color={new THREE.Color("#0000ff")}
+            ></SSAO>
+          ) : <></>}
           <Bloom
-            mipmapBlur
-            intensity={timerFinished ? 0.6 : 0.2}
-            luminanceThreshold={0.3}
+            mipmapBlur={!isMobile}
+            intensity={bloomIntensity}
+            luminanceThreshold={0.35}
             luminanceSmoothing={0.9}
           />
-          <ChromaticAberration
-            offset={[0.0005, 0.0005]}
-            radialModulation={true}
-            modulationOffset={0.5}
-          />
-          <GodRays
-            sun={sunRef}
-            blendFunction={BlendFunction.SCREEN}
-            samples={64}
-            density={0.9}
-            decay={0.92}
-            weight={timerFinished ? 0.6 : 0}
-            exposure={timerFinished ? 0.6 : 0}
-            clampMax={1}
-            blur={true}
-          />
+          {!isMobile ? (
+            <ChromaticAberration
+              offset={chromaOffset}
+              radialModulation={true}
+              modulationOffset={0.5}
+            />
+          ) : (
+            <GodRays
+              sun={sunRef}
+              blendFunction={BlendFunction.SCREEN}
+              samples={godraySamples}
+              density={0.85}
+              decay={0.9}
+              weight={timerFinished ? godrayWeights : 0}
+              exposure={timerFinished ? godrayWeights : 0}
+              clampMax={1}
+              blur={true}
+            />
+          )}
         </EffectComposer>
       )}
     </scene>

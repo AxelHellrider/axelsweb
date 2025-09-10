@@ -21,15 +21,6 @@ export default function AboutView({ onBack }: ViewProps) {
     { name: "Node.js", level: 4 },
   ];
 
-  const skillsBrightness = [
-    "bg-sky-400/40",
-    "bg-sky-400/55",
-    "bg-sky-400/70",
-    "bg-sky-400/85",
-    "bg-sky-400/100",
-  ];
-
-
   const experience = [
     {
       role: "Frontend Engineer",
@@ -69,14 +60,18 @@ export default function AboutView({ onBack }: ViewProps) {
       { id: 'experience', label: 'Experience' as const },
     ];
     return (
-      <div className={`inline-flex items-center gap-1 p-1 rounded-xl bg-white/5 ring-1 ring-white/10 ${className}`} role="tablist" aria-label="About sections">
+      <div className={`inline-flex flex-wrap items-center gap-1 p-1 rounded-xl bg-white/5 ring-1 ring-white/10 ${className}`} role="tablist" aria-label="About sections">
         {tabs.map(t => (
           <button
             key={t.id}
+            id={`tab-${t.id}-label`}
+            type="button"
             role="tab"
+            aria-controls={`tab-${t.id}`}
             aria-selected={activeTab === t.id}
+            tabIndex={activeTab === t.id ? 0 : -1}
             onClick={() => setActiveTab(t.id as typeof activeTab)}
-            className={`px-3 py-1.5 rounded-lg text-xs md:text-sm transition ${activeTab === t.id ? 'bg-sky-500/30 text-white' : 'text-gray-300 hover:bg-white/10'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs md:text-sm transition outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60 ${activeTab === t.id ? 'bg-sky-500/30 text-white' : 'text-gray-300 hover:bg-white/10'}`}
           >
             {t.label}
           </button>
@@ -85,58 +80,44 @@ export default function AboutView({ onBack }: ViewProps) {
     );
   };
 
-  // Panels
-  const SkillsPanel = () => (
-    <div className="mt-3 max-h-[50vh] md:max-h-[55vh] overflow-y-auto pr-1">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        {skills.map(s => (
-          <div key={s.name} className="">
-            <div className="flex items-center justify-between py-1.5 px-2 rounded-lg bg-white/5 ring-1 ring-white/10">
-              <span className="text-[13px] md:text-sm text-gray-200/95">{s.name}</span>
-              <div className="flex gap-1 ml-3">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <span key={i} className={`h-1.5 w-3 rounded-sm ${i < s.level ? skillsBrightness[i] : 'bg-white/20'}`} />
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+  const PanelSwitcher = () => (
+    <div className="mt-2" role="tabpanel" id={`tab-${activeTab}`} aria-labelledby={`tab-${activeTab}-label`}>
+      {activeTab === 'about' && <AboutText />}
+      {activeTab === 'skills' && <SkillsPanel />}
+      {activeTab === 'experience' && <ExperiencePanel />}
     </div>
   );
-
-  const ExperiencePanel = () => (
-    <div className="mt-3 max-h-[50vh] md:max-h-[55vh] overflow-y-auto pr-1">
-      <div className="flex flex-col gap-3">
-        {experience.map(x => (
-          <div key={`${x.role}-${x.company}`} className="rounded-xl p-4 md:p-5 bg-white/5 ring-1 ring-white/10">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="font-medium md:font-semibold text-sm md:text-base">{x.role}</div>
-                <div className="text-xs md:text-sm text-gray-300/90">{x.company}</div>
+  // Panels
+  const SkillsPanel = () => (
+    <div className="mt-3 max-h-[56vh] md:max-h-[55vh] overflow-y-auto pr-1">
+      <ul role="list" className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-3">
+        {skills.map((s) => (
+          <li role="listitem" key={s.name}>
+            <div className="rounded-xl p-3 md:p-4 bg-white/5 ring-1 ring-white/10 hover:bg-white/10 transition">
+              <div className="flex items-center justify-between">
+                <span className="text-[12px] md:text-sm font-medium text-gray-100">{s.name}</span>
+                <span className="text-[10px] text-white/60 md:hidden">{s.level}/5</span>
               </div>
-              <div className="text-[10px] md:text-xs text-gray-400 whitespace-nowrap">{x.period}</div>
+              <div className="mt-2 h-1.5 w-full rounded-full bg-white/15 ring-1 ring-white/10 overflow-hidden" aria-hidden="true">
+                <div className="h-full rounded-full bg-sky-400" style={{ width: `${(s.level / 5) * 100}%` }} />
+              </div>
+              <span className="sr-only">{`${s.name} skill level ${s.level} out of 5`}</span>
             </div>
-            <ul className="mt-2 list-disc list-inside text-xs md:text-sm text-gray-200/90">
-              {x.bullets.map((b, i) => (
-                <li key={i}>{b}</li>
-              ))}
-            </ul>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 
   const ProfileCard = ({ size = 150 }: { size?: number }) => (
-    <div className="flex flex-row md:flex-col items-start md:items-center md:items-start gap-4">
+    <div className="flex flex-row md:flex-col items-start md:items-start lg:items-center gap-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
             className="rounded-2xl ring-2 ring-[#009dff]/60 shadow-[0_0_25px_rgba(0,150,255,0.35)]"
             width={size}
             height={size}
             src="/about/linkedin-profpic.jpg"
-            alt="profile picture"
+            alt="Portrait of Alexandros Nomikos"
         />
       <div className="flex flex-col items-stretch gap-2 md:gap-4">
             <h2 className="text-base font-bold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent md:text-xl lg:text-2xl">
@@ -148,8 +129,8 @@ export default function AboutView({ onBack }: ViewProps) {
   );
 
   const AboutText = () => (
-    <div>
-      <h2 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
+    <section aria-labelledby="about-heading">
+      <h2 id="about-heading" className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
         About Me
       </h2>
       <p className="text-sm leading-relaxed text-gray-200/90">
@@ -162,7 +143,31 @@ export default function AboutView({ onBack }: ViewProps) {
         Beyond code, I explore music, AI, and myth‑inspired narratives — weaving technical precision with
         creative vision to build immersive digital worlds.
       </p>
-    </div>
+    </section>
+  );
+
+  const ExperiencePanel = () => (
+    <section className="mt-3 max-h-[50vh] md:max-h-[55vh] overflow-y-auto pr-1" aria-labelledby="experience-heading">
+      <h2 id="experience-heading" className="sr-only">Experience</h2>
+      <div className="flex flex-col gap-3">
+        {experience.map(x => (
+          <article key={`${x.role}-${x.company}`} className="rounded-xl p-4 md:p-5 bg-white/5 ring-1 ring-white/10" aria-label={`${x.role} at ${x.company}`}>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="font-medium md:font-semibold text-sm md:text-base">{x.role}</div>
+                <div className="text-xs md:text-sm text-gray-300/90">{x.company}</div>
+              </div>
+              <div className="text-[10px] md:text-xs text-gray-400 whitespace-nowrap">{x.period}</div>
+            </div>
+            <ul className="mt-2 list-disc list-inside text-xs md:text-sm text-gray-200/90">
+              {x.bullets.map((b, i) => (
+                <li key={i}>{b}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
   );
 
   // Unified layout: same tab structure on both desktop and mobile
@@ -177,43 +182,36 @@ export default function AboutView({ onBack }: ViewProps) {
             >
               ← Back
             </button>
-            <div className={sectionCard}>
+            {/* Minimal floating header: remove heavy card, keep profile info lightweight */}
+            <div className="flex items-start gap-4">
               <ProfileCard size={80} />
             </div>
           </div>
-          
-          <div className={sectionCard}>
-            <TabBar />
-            <div className="mt-2">
-              {activeTab === 'about' && <AboutText />}
-              {activeTab === 'skills' && <SkillsPanel />}
-              {activeTab === 'experience' && <ExperiencePanel />}
-            </div>
-          </div>
+
+          {/* Soft divider for structure without a container */}
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+          <TabBar />
+          <PanelSwitcher />
         </div>
       ) : (
-        <div className="hidden md:grid grid-cols-3 gap-6 text-white px-6 py-6 transition-all duration-300 contain-parent">
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 text-white px-4 md:px-6 py-4 md:py-6 transition-all duration-300 contain-parent max-w-6xl mx-auto">
            {/* Left column */}
            <div className="flex flex-col gap-5">
              <div className={sectionCard}>
                <ProfileCard />
              </div>
            </div>
-           {/* Center column left empty to keep crystal visually centered */}
-           <div />
+           {/* Center column left empty to keep crystal visually centered on lg */}
+           <div className="hidden lg:block" />
            {/* Right column */}
            <div className="flex flex-col gap-5">
              <div className={sectionCard}>
                <TabBar />
-               <div className="mt-2">
-                 {activeTab === 'about' && <AboutText />}
-                 {activeTab === 'skills' && <SkillsPanel />}
-                 {activeTab === 'experience' && <ExperiencePanel />}
-               </div>
+               <PanelSwitcher />
              </div>
              <button
                onClick={onBack}
-               className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)]"
+               className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60"
              >
                ← Back
              </button>

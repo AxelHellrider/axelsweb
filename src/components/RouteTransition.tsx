@@ -19,11 +19,11 @@ export default function RouteTransition({ children }: { children: React.ReactNod
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={pathname}
-        className="absolute inset-0"
-        initial={{ opacity: 0, y: 8 }}
+        className="absolute inset-0 will-change-transform will-change-opacity"
+        initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        exit={{ opacity: 0, y: -6 }}
+        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
       >
         {children}
       </motion.div>

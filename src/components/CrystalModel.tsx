@@ -8,7 +8,7 @@ interface CrystalModelProps {
     timerFinished: boolean;
 }
 
-export default function CrystalModel({ url, timerFinished}: CrystalModelProps) {
+export default function CrystalModel({ url }: CrystalModelProps) {
     const ref = useRef<THREE.Group>(null!);
     const { scene } = useGLTF(url);
     
@@ -23,14 +23,19 @@ export default function CrystalModel({ url, timerFinished}: CrystalModelProps) {
         }
     }, [scene]);
 
-    useFrame((state, delta) => {
+    useFrame((state) => {
         const t = state.clock.getElapsedTime();
+        const isMobile = state.viewport.width < 8; // heuristic: smaller world units => mobile screens
+        const rotSpeed = isMobile ? 0.07 : 0.1;
+        const wobbleSpeed = isMobile ? 0.035 : 0.05;
+        const floatSpeed = isMobile ? 0.35 : 0.5;
+        const floatAmp = isMobile ? 0.14 : 0.2;
+        const scaleAmp = isMobile ? 0.007 : 0.01;
         if (ref.current) {
-            ref.current.rotation.y = t * 0.1;
-            ref.current.rotation.z = Math.sin(t * 0.05) * 0.02;
-            ref.current.position.y = Math.sin(t * 0.5) * 0.2;
-            
-            const scale = 1 + Math.sin(t) * 0.01;
+            ref.current.rotation.y = t * rotSpeed;
+            ref.current.rotation.z = Math.sin(t * wobbleSpeed) * 0.02;
+            ref.current.position.y = Math.sin(t * floatSpeed) * floatAmp;
+            const scale = 1 + Math.sin(t) * scaleAmp;
             ref.current.scale.set(scale, scale, scale);
         }
     });
