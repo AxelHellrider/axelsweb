@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import SceneComposition from "@/components/SceneComposition";
@@ -23,7 +24,7 @@ export default function CanvasBackground() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // Camera settings per viewport
+  // Camera settings per viewport (preserve visuals)
   const cameraSettings = useMemo(() => {
     switch (viewport) {
       case "mobile":
@@ -40,14 +41,27 @@ export default function CanvasBackground() {
     return () => clearTimeout(t);
   }, []);
 
+  const glProps = useMemo(
+    () => ({
+      antialias: !isMobile,
+      powerPreference: "high-performance" as const,
+      alpha: true,
+      premultipliedAlpha: true,
+      stencil: false,
+      depth: true,
+      preserveDrawingBuffer: false,
+    }),
+    [isMobile]
+  );
+
   return (
     <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
       <Canvas
         className="absolute inset-0"
         camera={cameraSettings}
         shadows={!isMobile}
-        dpr={isMobile ? [1, 1.25] : [1, 2]}
-        gl={{ antialias: !isMobile, powerPreference: "high-performance" }}
+        dpr={isMobile ? ([1, 1.25] as [number, number]) : ([1, 2] as [number, number])}
+        gl={glProps}
       >
         <color attach="background" args={["#000"]} />
         <SceneComposition

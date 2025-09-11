@@ -20,6 +20,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "3",
+    "@gltf-transform/cli": "^4.2.1",
+    "@gltf-transform/functions": "^4.2.1",
     "@next/bundle-analyzer": "^15.5.0",
     "@tailwindcss/postcss": "4",
     "@types/node": "20",

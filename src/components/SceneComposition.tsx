@@ -52,8 +52,21 @@ export default function SceneComposition({
     });
   }, []);
 
-  // Throttle subtle updates to reduce CPU on low-end devices
-  const [tick, setTick] = useState(0);
+  // Reusable vectors to avoid per-frame allocations
+  const vCamPos = useMemo(() => new THREE.Vector3(), []);
+  const vDir = useMemo(() => new THREE.Vector3(), []);
+  const vRight = useMemo(() => new THREE.Vector3(), []);
+  const vUp = useMemo(() => new THREE.Vector3(), []);
+  const vCrystalPos = useMemo(() => new THREE.Vector3(), []);
+  const vTempA = useMemo(() => new THREE.Vector3(), []);
+  const vTempB = useMemo(() => new THREE.Vector3(), []);
+  const lateralOffsets = useMemo(() => [-0.35, 0, 0.35] as const, []);
+  const forwardOffset = 0.25;
+  const yOffsets = useMemo(() => ([-0.25 * crystalHeight, 0, 0.25 * crystalHeight] as const), [crystalHeight]);
+
+  // Throttle subtle spotlight updates via a ref (avoid React state re-renders)
+  const tickRef = useRef(0);
+
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
 
@@ -66,41 +79,37 @@ export default function SceneComposition({
     }
 
     if (crystalTarget) {
-      const cam = state.camera;
-      const camPos = new THREE.Vector3();
-      const dir = new THREE.Vector3();
-      const right = new THREE.Vector3();
-      const up = new THREE.Vector3();
-      cam.getWorldPosition(camPos);
-      cam.getWorldDirection(dir).normalize();
-      up.copy(cam.up).normalize();
-      right.copy(new THREE.Vector3().crossVectors(dir, up)).normalize();
+      const cam = state.camera as THREE.Camera & { up: THREE.Vector3 };
 
-      const lateralOffsets = [-0.35, 0, 0.35];
-      const forwardOffset = 0.25;
+      // Camera basis vectors
+      cam.getWorldPosition(vCamPos);
+      cam.getWorldDirection(vDir).normalize();
+      vUp.copy(cam.up).normalize();
+      vRight.crossVectors(vDir, vUp).normalize();
 
-      const crystalPos = new THREE.Vector3();
-      crystalTarget.getWorldPosition(crystalPos);
-      const yOffsets = [-0.25 * crystalHeight, 0, 0.25 * crystalHeight];
+      // Crystal world position
+      crystalTarget.getWorldPosition(vCrystalPos);
 
       [spot1, spot2, spot3].forEach((spotRef, i) => {
         const spot = spotRef.current;
         if (!spot) return;
         // Only update spotlight positions every other frame on mobile to reduce jank
-        if (isMobile && tick % 2 !== 0) return;
-        const pos = camPos
-          .clone()
-          .add(right.clone().multiplyScalar(lateralOffsets[i] ?? 0))
-          .add(dir.clone().multiplyScalar(forwardOffset));
-        spot.position.copy(pos);
+        if (isMobile && tickRef.current % 2 !== 0) return;
+
+        // pos = camPos + right * lateralOffset + dir * forwardOffset
+        vTempA.copy(vRight).multiplyScalar(lateralOffsets[i] ?? 0);
+        vTempB.copy(vDir).multiplyScalar(forwardOffset);
+        spot.position.copy(vCamPos).add(vTempA).add(vTempB);
+
         spot.target.position.set(
-          crystalPos.x,
-          crystalPos.y + (yOffsets[i] ?? 0),
-          crystalPos.z
+          vCrystalPos.x,
+          vCrystalPos.y + (yOffsets[i] ?? 0),
+          vCrystalPos.z
         );
         spot.target.updateMatrixWorld();
       });
-      if (isMobile) setTick((v) => (v + 1) % 60);
+
+      if (isMobile) tickRef.current = (tickRef.current + 1) % 60;
     }
   });
 
@@ -123,6 +132,7 @@ export default function SceneComposition({
   const chromaOffset: [number, number] = viewport === "mobile" ? [0.00025, 0.00025] : [0.0005, 0.0005];
   const godraySamples = viewport === "mobile" ? 24 : viewport === "tablet" ? 48 : 64;
   const godrayWeights = viewport === "mobile" ? 0.35 : viewport === "tablet" ? 0.5 : 0.6;
+  const ssaoColor = useMemo(() => new THREE.Color("#0000ff"), []);
 
   return (
     <scene ref={sceneRef}>
@@ -193,7 +203,7 @@ export default function SceneComposition({
               radius={0.6}
               intensity={ssaoIntensity}
               luminanceInfluence={0.7}
-              color={new THREE.Color("#0000ff")}
+              color={ssaoColor}
             ></SSAO>
           ) : <></>}
           <Bloom

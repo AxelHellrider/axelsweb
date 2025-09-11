@@ -5,13 +5,13 @@ import type { ViewProps } from "./ViewTypes";
 import { MdEmail } from "react-icons/md";
 import { FaGithub, FaLinkedin } from "react-icons/fa6";
 
-export default function ContactView({ onBack }: ViewProps) {
-  const socials = [
-    { label: "Email", href: "mailto:alex.nomikos@outlook.com", icon: MdEmail },
-    { label: "GitHub", href: "https://github.com/AxelHellrider", icon: FaGithub },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/alexandros-nomikos/", icon: FaLinkedin },
-  ];
+const SOCIALS = [
+  { label: "Email", href: "mailto:alex.nomikos@outlook.com", icon: MdEmail },
+  { label: "GitHub", href: "https://github.com/AxelHellrider", icon: FaGithub },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/alexandros-nomikos/", icon: FaLinkedin },
+] as const;
 
+export default function ContactView({ onBack }: ViewProps) {
   return (
     <ViewShell onBack={onBack}>
       <div className="absolute z-10 h-full w-full flex flex-col items-stretch justify-end md:items-center md:justify-center px-4">
@@ -36,7 +36,7 @@ export default function ContactView({ onBack }: ViewProps) {
             I’d love to connect. Reach out via any of the links below.
           </p>
           <ul role="list" className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {socials.map((s) => (
+            {SOCIALS.map((s) => (
               <li key={s.label} role="listitem">
                 <a
                   href={s.href}

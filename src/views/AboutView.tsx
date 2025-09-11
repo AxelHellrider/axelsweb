@@ -3,45 +3,51 @@ import React from "react";
 import { ViewProps } from "@/views/ViewTypes";
 import MobileUtil from "@/hooks/MobileUtil";
 
+// Hoisted constants to avoid re-creating on each render
+const SECTION_CARD = "rounded-2xl p-5 bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_30px_rgba(0,150,255,0.35)]";
+const TABS = [
+  { id: 'about', label: 'About' as const },
+  { id: 'skills', label: 'Skills' as const },
+  { id: 'experience', label: 'Experience' as const },
+] as const;
+
+const SKILLS = [
+  { name: "HTML", level: 5 },
+  { name: "CSS", level: 5 },
+  { name: "JavaScript", level: 5 },
+  { name: "React", level: 4 },
+  { name: "Next.js", level: 3 },
+  { name: "TailwindCSS", level: 3 },
+  { name: "Sass", level: 4 },
+  { name: "PHP", level: 3 },
+  { name: "Phalcon PHP", level: 3 },
+  { name: "Node.js", level: 4 },
+] as const;
+
+const EXPERIENCE = [
+  {
+    role: "Frontend Engineer",
+    company: "ESOFTHALL LTD.",
+    period: "July 2024 – Present",
+    bullets: [
+      "Building interactive 3D experiences (Three.js / R3F)",
+      "Leading UI architecture with Next.js and TailwindCSS",
+    ],
+  },
+  {
+    role: "Web Developer",
+    company: "ICOP Internet Solutions",
+    period: "January 2023 – June 2024",
+    bullets: [
+      "Shipped design systems and component libraries",
+      "Drove performance, accessibility, and DX improvements",
+    ],
+  },
+] as const;
+
 export default function AboutView({ onBack }: ViewProps) {
   const isMobile = MobileUtil(768);
-  const sectionCard = "rounded-2xl p-5 bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_30px_rgba(0,150,255,0.35)]";
-
-  // Skills limited to the requested set
-  const skills = [
-    { name: "HTML", level: 5 },
-    { name: "CSS", level: 5 },
-    { name: "JavaScript", level: 5 },
-    { name: "React", level: 4 },
-    { name: "Next.js", level: 3 },
-    { name: "TailwindCSS", level: 3 },
-    { name: "Sass", level: 4 },
-    { name: "PHP", level: 3 },
-    { name: "Phalcon PHP", level: 3 },
-    { name: "Node.js", level: 4 },
-  ];
-
-  const experience = [
-    {
-      role: "Frontend Engineer",
-      company: "ESOFTHALL LTD.",
-      period: "July 2024 – Present",
-      bullets: [
-        "Building interactive 3D experiences (Three.js / R3F)",
-        "Leading UI architecture with Next.js and TailwindCSS",
-      ],
-    },
-    {
-      role: "Web Developer",
-      company: "ICOP Internet Solutions",
-      period: "January 2023 – June 2024",
-      bullets: [
-        "Shipped design systems and component libraries",
-        "Drove performance, accessibility, and DX improvements",
-      ],
-    },
-  ];
-
+  // ... existing code ...
   // Tabs state (defaults to About on mobile, Skills on desktop)
   const [activeTab, setActiveTab] = React.useState<'about' | 'skills' | 'experience'>(
     typeof window !== 'undefined' && window.innerWidth < 768 ? 'about' : 'skills'
@@ -54,14 +60,9 @@ export default function AboutView({ onBack }: ViewProps) {
 
   // Tab bar
   const TabBar = ({ className = "" }: { className?: string }) => {
-    const tabs = [
-      { id: 'about', label: 'About' as const },
-      { id: 'skills', label: 'Skills' as const },
-      { id: 'experience', label: 'Experience' as const },
-    ];
     return (
       <div className={`inline-flex flex-wrap items-center gap-1 p-1 rounded-xl bg-white/5 ring-1 ring-white/10 ${className}`} role="tablist" aria-label="About sections">
-        {tabs.map(t => (
+        {TABS.map(t => (
           <button
             key={t.id}
             id={`tab-${t.id}-label`}
@@ -91,7 +92,7 @@ export default function AboutView({ onBack }: ViewProps) {
   const SkillsPanel = () => (
     <div className="mt-3 max-h-[56vh] md:max-h-[55vh] overflow-y-auto pr-1">
       <ul role="list" className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-3">
-        {skills.map((s) => (
+        {SKILLS.map((s) => (
           <li role="listitem" key={s.name}>
             <div className="rounded-xl p-3 md:p-4 bg-white/5 ring-1 ring-white/10 hover:bg-white/10 transition">
               <div className="flex items-center justify-between">
@@ -118,6 +119,8 @@ export default function AboutView({ onBack }: ViewProps) {
             height={size}
             src="/about/linkedin-profpic.jpg"
             alt="Portrait of Alexandros Nomikos"
+            loading="lazy"
+            decoding="async"
         />
       <div className="flex flex-col items-stretch gap-2 md:gap-4">
             <h2 className="text-base font-bold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent md:text-xl lg:text-2xl">
@@ -150,7 +153,7 @@ export default function AboutView({ onBack }: ViewProps) {
     <section className="mt-3 max-h-[50vh] md:max-h-[55vh] overflow-y-auto pr-1" aria-labelledby="experience-heading">
       <h2 id="experience-heading" className="sr-only">Experience</h2>
       <div className="flex flex-col gap-3">
-        {experience.map(x => (
+        {EXPERIENCE.map(x => (
           <article key={`${x.role}-${x.company}`} className="rounded-xl p-4 md:p-5 bg-white/5 ring-1 ring-white/10" aria-label={`${x.role} at ${x.company}`}>
             <div className="flex items-center justify-between gap-3">
               <div>
@@ -160,8 +163,8 @@ export default function AboutView({ onBack }: ViewProps) {
               <div className="text-[10px] md:text-xs text-gray-400 whitespace-nowrap">{x.period}</div>
             </div>
             <ul className="mt-2 list-disc list-inside text-xs md:text-sm text-gray-200/90">
-              {x.bullets.map((b, i) => (
-                <li key={i}>{b}</li>
+              {x.bullets.map((b) => (
+                <li key={`${x.role}-${b}`}>{b}</li>
               ))}
             </ul>
           </article>
@@ -197,7 +200,7 @@ export default function AboutView({ onBack }: ViewProps) {
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 text-white px-4 md:px-6 py-4 md:py-6 transition-all duration-300 contain-parent max-w-6xl mx-auto">
            {/* Left column */}
            <div className="flex flex-col gap-5">
-             <div className={sectionCard}>
+             <div className={SECTION_CARD}>
                <ProfileCard />
              </div>
            </div>
@@ -205,7 +208,7 @@ export default function AboutView({ onBack }: ViewProps) {
            <div className="hidden lg:block" />
            {/* Right column */}
            <div className="flex flex-col gap-5">
-             <div className={sectionCard}>
+             <div className={SECTION_CARD}>
                <TabBar />
                <PanelSwitcher />
              </div>
