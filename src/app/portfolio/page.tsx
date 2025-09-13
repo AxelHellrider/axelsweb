@@ -1,6 +1,10 @@
-"use client";
-import PortfolioView from "@/views/PortfolioView";
+import type { Metadata } from "next";
+import PortfolioView from "../../views/PortfolioView";
 
-export default function PortfolioPage() {
-  return <PortfolioView onBack={() => history.back()} />;
+export const metadata: Metadata = {
+  title: "Portfolio | Axel",
+};
+
+export default function Page() {
+  return <PortfolioView />;
 }

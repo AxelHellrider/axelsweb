@@ -3,6 +3,9 @@ import "./globals.css";
 import CanvasBackground from "@/components/CanvasBackground";
 import RouteTransition from "@/components/RouteTransition";
 import Head from "next/head";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import UIChromeController from "@/components/UIChromeController";
 
 export const metadata: Metadata = {
   title: "Alexandros Nomikos | Portfolio",
@@ -52,8 +55,21 @@ export default function RootLayout({
       </Head>
       <body className="antialiased relative min-h-dvh w-screen overflow-hidden text-[clamp(11px,1.33vw,14px)]">
         <CanvasBackground />
-        <div className="absolute inset-0 z-20 pointer-events-auto">
-          <RouteTransition>{children}</RouteTransition>
+        {/* UI toggle lives outside of chrome so it remains available when UI is hidden */}
+        <UIChromeController />
+        <div className="ui-chrome absolute inset-0 z-20 pointer-events-none flex flex-col">
+          <Header />
+          {/* Make content region positioning context for RouteTransition */}
+          <div className="pointer-events-auto flex-1 min-h-0 relative">
+            <RouteTransition>
+              <main id="main" role="main" className="h-full w-full overflow-auto overscroll-contain">
+                {children}
+              </main>
+            </RouteTransition>
+          </div>
+          <Footer />
+          {/* Move skip link inside chrome so it hides with UI */}
+          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-black/70 focus:text-white focus:px-3 focus:py-2 focus:rounded-md">Skip to content</a>
         </div>
       </body>
     </html>

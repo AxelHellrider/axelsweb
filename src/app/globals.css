@@ -1,90 +1,60 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 @import "tailwindcss";
 
-/* Base reset and box sizing */
-*, *::before, *::after { box-sizing: border-box; }
-html, body { 
-  width: 100%;
-  height: 100svh;
+:root {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
 }
 
-:root {
-  --background: #000;
-  --foreground: #e5e5e5;
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Noto Sans JP', Arial, Helvetica, sans-serif;
-  line-height: 1.5;
-  overscroll-behavior: contain;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+  color: hsl(var(--foreground));
+  background: radial-gradient(1200px 800px at 20% 0%, rgba(33, 150, 243, 0.06), transparent 60%),
+              radial-gradient(900px 600px at 80% 20%, rgba(139, 92, 246, 0.05), transparent 60%),
+              #020617;
 }
 
-img, video, canvas, svg {
-  max-width: 100%;
-  display: block;
+/* Smooth transitions for interface chrome (header/footer/etc.) */
+.ui-chrome {
+  transition: opacity 360ms cubic-bezier(.22,.61,.36,1),
+              transform 360ms cubic-bezier(.22,.61,.36,1),
+              filter 360ms cubic-bezier(.22,.61,.36,1);
+  will-change: opacity, transform, filter;
 }
 
-/* Respect user preferences for reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
+/* When UI is hidden, gently fade and veil like FF-style menu transitions */
+body.ui-hidden .ui-chrome {
+  opacity: 0;
+  transform: translateY(6px) scale(0.995);
+  filter: blur(2px) saturate(0.9);
+  pointer-events: none;
 }
 
-/* Containment helpers to keep overlays bounded */
-.contain-layout { contain: layout paint; }
-.contain-parent { overflow: hidden; }
-
-/* Animation helpers */
-@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
-
-/* Branding */
-.ffxiv-font {
-  font-weight: 400;
-  -webkit-text-stroke: 1px #006cbd;
-  text-stroke: 1px #006cbd;
-  color: #9bd0f6;
-  letter-spacing: 0.25px;
-  line-height: 1.5;
+/* Keep canvas interactive when UI is hidden */
+body.ui-hidden canvas {
+  pointer-events: auto !important;
 }
 
-.ffxiv-font-shadow {
-  text-shadow: 1px 1px 2px #9bd0f6cc;
+/* Improve scroll/overscroll behavior for content area */
+.ui-chrome main {
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Dialog Layout */
-.welcome-dialog {
-  background: var(--dialog-bg);
-  color: var(--foreground);
-  border-radius: 8px;
-  animation: fade-in 2s ease-in;
-  letter-spacing: 0.25px;
-  line-height: 1.5;
-}
-
-.character-title {
-  background: linear-gradient(12deg, var(--foreground) 0%, transparent 60%);
-  color: var(--color-white);
+/* Optional: subtle focus ring aesthetic for FF vibes */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.65), 0 0 16px rgba(56, 189, 248, 0.25);
   border-radius: 6px;
-  padding: 4px 8px;
-  width: 50%;
-}
-@keyframes fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
 }
 
-/* Floating animation */
-.float { animation: float 1.5s infinite linear; }
-@keyframes float {
-  0% { transform: translateY(1.25px); }
-  50% { transform: translateY(-1.25px); }
-  100% { transform: translateY(1.25px); }
+/* Basic typography improvements */
+h1, h2, h3 {
+  letter-spacing: 0.02em;
 }

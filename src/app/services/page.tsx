@@ -1,7 +1,10 @@
-"use client";
-import React from "react";
-import ServicesView from "@/views/ServicesView";
+import type { Metadata } from "next";
+import ServicesView from "../../views/ServicesView";
 
-export default function ServicesPage() {
-  return <ServicesView onBack={() => history.back()} />;
+export const metadata: Metadata = {
+  title: "Services | Axel",
+};
+
+export default function Page() {
+  return <ServicesView />;
 }

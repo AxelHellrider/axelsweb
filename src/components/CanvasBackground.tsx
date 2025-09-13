@@ -3,11 +3,21 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import SceneComposition from "@/components/SceneComposition";
-import MobileUtil from "@/hooks/MobileUtil";
 import { AdaptiveDpr } from "@react-three/drei";
 
+const useIsMobile = (bp: number = 1024) => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= bp);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, [bp]);
+  return isMobile;
+};
+
 export default function CanvasBackground() {
-  const isMobile = MobileUtil();
+  const isMobile = useIsMobile();
   const [timerFinished, setTimerFinished] = useState(false);
 
   // Determine viewport breakpoint

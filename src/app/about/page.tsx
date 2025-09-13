@@ -1,6 +1,10 @@
-"use client";
-import AboutView from "@/views/AboutView";
+import type { Metadata } from "next";
+import AboutView from "../../views/AboutView";
 
-export default function AboutPage() {
-  return <AboutView onBack={() => history.back()} />;
+export const metadata: Metadata = {
+  title: "About | Alexandros Nomikos",
+};
+
+export default function Page() {
+  return <AboutView />;
 }

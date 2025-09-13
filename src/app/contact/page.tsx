@@ -1,7 +1,10 @@
-"use client";
-import React from "react";
-import ContactView from "@/views/ContactView";
+import type { Metadata } from "next";
+import ContactView from "../../views/ContactView";
 
-export default function ContactPage() {
-  return <ContactView onBack={() => history.back()} />;
+export const metadata: Metadata = {
+  title: "Contact | Alexandros Nomikos",
+};
+
+export default function Page() {
+  return <ContactView />;
 }
