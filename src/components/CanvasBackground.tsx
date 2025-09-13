@@ -85,16 +85,15 @@ export default function CanvasBackground() {
         className="absolute inset-0"
         camera={cameraSettings}
         shadows={!isMobile}
-        dpr={isMobile ? ([1, 1.25] as [number, number]) : ([1, 2] as [number, number])}
+        dpr={([1, 2] as [number, number])}
         gl={glProps}
       >
         <color attach="background" args={["#000"]} />
         <SceneComposition
           timerFinished={timerFinished}
-          enablePostProcessing={!isMobile}
+          enablePostProcessing={true}
           isMobile={isMobile}
           viewport={viewport}
-          showPerf={showPerf}
         />
         <AdaptiveDpr pixelated />
       </Canvas>

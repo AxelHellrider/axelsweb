@@ -7,7 +7,6 @@ import { EffectComposer, Bloom, SSAO, ChromaticAberration, GodRays } from "@reac
 import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
-import { Stats } from "@react-three/drei";
 
 interface SceneContentProps {
   timerFinished: boolean;
@@ -15,15 +14,13 @@ interface SceneContentProps {
   isMobile?: boolean;
   viewport?: "mobile" | "tablet" | "desktop";
   isHome?: boolean;
-  showPerf?: boolean;
 }
 
 export default function SceneComposition({
   timerFinished,
   enablePostProcessing = true,
   isMobile = false,
-  viewport = "desktop",
-  showPerf = false,
+  viewport = "desktop"
 }: SceneContentProps) {
   const sceneRef = useRef<THREE.Scene>(null!);
   const spot1 = useRef<THREE.SpotLight>(null!);
@@ -199,44 +196,38 @@ export default function SceneComposition({
 
       {/* Enhanced Postprocessing */}
       {enablePostProcessing && (
-        <EffectComposer multisampling={isMobile ? 0 : 2} enableNormalPass={!isMobile}>
-          {!isMobile ? (
-            <SSAO
-              samples={ssaoSamples}
-              radius={0.6}
-              intensity={ssaoIntensity}
-              luminanceInfluence={0.7}
-              color={ssaoColor}
-            ></SSAO>
-          ) : <></>}
+        <EffectComposer multisampling={2} enableNormalPass={true}>
+          <SSAO
+            samples={isMobile ? 8 : ssaoSamples}
+            radius={0.6}
+            intensity={isMobile ? 8 : ssaoIntensity}
+            luminanceInfluence={0.7}
+            color={ssaoColor}
+          ></SSAO>
           <Bloom
-            mipmapBlur={!isMobile}
-            intensity={bloomIntensity}
+            mipmapBlur={false}
+            intensity={isMobile ? 0.2 : bloomIntensity}
             luminanceThreshold={0.35}
             luminanceSmoothing={0.9}
           />
-          {!isMobile ? (
-            <ChromaticAberration
-              offset={chromaOffset}
-              radialModulation={true}
-              modulationOffset={0.5}
-            />
-          ) : (
-            <GodRays
-              sun={sunRef}
-              blendFunction={BlendFunction.SCREEN}
-              samples={godraySamples}
-              density={0.85}
-              decay={0.9}
-              weight={timerFinished ? godrayWeights : 0}
-              exposure={timerFinished ? godrayWeights : 0}
-              clampMax={1}
-              blur={true}
-            />
-          )}
+          <ChromaticAberration
+            offset={isMobile ? [0.0002, 0.0002] : chromaOffset}
+            radialModulation={true}
+            modulationOffset={0.5}
+          />
+          <GodRays
+            sun={sunRef}
+            blendFunction={BlendFunction.SCREEN}
+            samples={isMobile ? 16 : godraySamples}
+            density={isMobile ? 0.6 : 0.85}
+            decay={isMobile ? 0.8 : 0.9}
+            weight={timerFinished ? (isMobile ? 0.2 : godrayWeights) : 0}
+            exposure={timerFinished ? (isMobile ? 0.2 : godrayWeights) : 0}
+            clampMax={1}
+            blur={true}
+          />
         </EffectComposer>
       )}
-      {showPerf && <Stats />}
     </scene>
   );
 }
