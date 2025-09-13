@@ -10,28 +10,6 @@ import React, { useEffect, useState } from "react";
 export default function UIChromeController() {
   const [hidden, setHidden] = useState(false);
 
-  // Initialize from persisted preference
-  useEffect(() => {
-    try {
-      const v = localStorage.getItem("uiHidden");
-      if (v === "1") {
-        document.body.classList.add("ui-hidden");
-        setHidden(true);
-      }
-    } catch {}
-  }, []);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      // Toggle with Shift+H for power users
-      if (e.key.toLowerCase() === "h" && e.shiftKey) {
-        toggle();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
   const toggle = () => {
     const next = !hidden;
     setHidden(next);
@@ -51,7 +29,7 @@ export default function UIChromeController() {
         className="pointer-events-auto select-none inline-flex items-center gap-2 rounded-full bg-black/55 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_16px_rgba(0,150,255,0.25)] px-3 py-2 text-xs text-white/90 hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60"
       >
         <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: hidden ? "#38bdf8" : "#94a3b8" }} />
-        {hidden ? "UI Hidden (Shift+H)" : "Hide UI (Shift+H)"}
+        {hidden ? "UI Hidden" : "Hide UI"}
       </button>
     </div>
   );

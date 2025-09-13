@@ -13,7 +13,7 @@ const SOCIALS = [
 
 export default function ContactView() {
   return (
-    <div className="absolute z-10 h-full w-full flex flex-col items-stretch justify-end md:items-center md:justify-center px-4">
+    <div className="h-full w-full flex flex-col items-stretch justify-end md:items-center md:justify-center px-4">
       <motion.div
         initial={{ x: 40, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}

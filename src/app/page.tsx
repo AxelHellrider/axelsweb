@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center p-4 sm:p-6">
+    <div className="h-full flex items-center justify-center p-4 sm:p-6">
       <div className="max-w-3xl w-full">
         <section className="rounded-2xl p-5 md:p-7 bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_40px_rgba(0,150,255,0.25)] text-white">
           <h1 className="text-2xl md:text-3xl font-semibold tracking-tight bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">

@@ -19,7 +19,7 @@ export default function RouteTransition({ children }: { children: React.ReactNod
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={pathname}
-        className="absolute inset-0 will-change-transform will-change-opacity"
+        className="w-full h-full will-change-transform will-change-opacity"
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -6 }}

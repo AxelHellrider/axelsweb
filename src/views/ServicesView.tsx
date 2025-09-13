@@ -23,7 +23,7 @@ const SERVICES = [
 
 export default function ServicesView() {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center text-white p-4 sm:p-5 md:p-6">
+    <div className="h-full flex items-center justify-center text-white p-4 sm:p-5 md:p-6">
       <div className="rounded-2xl p-5 md:p-6 bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_30px_rgba(0,150,255,0.2)] max-w-4xl w-full">
         <div className="flex items-center justify-between gap-3">
           <div>

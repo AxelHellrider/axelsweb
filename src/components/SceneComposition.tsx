@@ -7,6 +7,7 @@ import { EffectComposer, Bloom, SSAO, ChromaticAberration, GodRays } from "@reac
 import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
+import { Stats } from "@react-three/drei";
 
 interface SceneContentProps {
   timerFinished: boolean;
@@ -14,6 +15,7 @@ interface SceneContentProps {
   isMobile?: boolean;
   viewport?: "mobile" | "tablet" | "desktop";
   isHome?: boolean;
+  showPerf?: boolean;
 }
 
 export default function SceneComposition({
@@ -21,6 +23,7 @@ export default function SceneComposition({
   enablePostProcessing = true,
   isMobile = false,
   viewport = "desktop",
+  showPerf = false,
 }: SceneContentProps) {
   const sceneRef = useRef<THREE.Scene>(null!);
   const spot1 = useRef<THREE.SpotLight>(null!);
@@ -117,7 +120,7 @@ export default function SceneComposition({
   const crystalGroupRef = useRef<THREE.Group>(null!);
 
   // Particle and effect tuning by viewport
-  const particleCount = useMemo(() => (viewport === "mobile" ? 200 : viewport === "tablet" ? 500 : 1000), [viewport]);
+  const particleCount = 300;
   const particleRotation = isMobile ? 0.015 : 0.02;
   const particleColor = isMobile ? 0xaad4ff : 0x88aaff; // brighter blue on mobile
   const particleSize = isMobile ? 0.03 : 0.025; // slightly bigger on mobile
@@ -126,12 +129,12 @@ export default function SceneComposition({
   const spotIntensity = isMobile ? 14 : 26;
 
   // Post-processing quality tiers
-  const ssaoSamples = viewport === "mobile" ? 8 : viewport === "tablet" ? 16 : 30;
-  const ssaoIntensity = viewport === "mobile" ? 10 : viewport === "tablet" ? 18 : 24;
-  const bloomIntensity = viewport === "mobile" ? 0.35 : viewport === "tablet" ? 0.5 : 0.6;
-  const chromaOffset: [number, number] = viewport === "mobile" ? [0.00025, 0.00025] : [0.0005, 0.0005];
-  const godraySamples = viewport === "mobile" ? 24 : viewport === "tablet" ? 48 : 64;
-  const godrayWeights = viewport === "mobile" ? 0.35 : viewport === "tablet" ? 0.5 : 0.6;
+  const ssaoSamples = 16;
+  const ssaoIntensity = 16;
+  const bloomIntensity = 0.4;
+  const chromaOffset: [number, number] = [0.0005, 0.0005];
+  const godraySamples = 36;
+  const godrayWeights = 0.4;
   const ssaoColor = useMemo(() => new THREE.Color("#0000ff"), []);
 
   return (
@@ -154,7 +157,7 @@ export default function SceneComposition({
         </mesh>
 
         {/* Crystal */}
-        <CrystalModel url="/models/crystal6.glb" timerFinished={timerFinished} />
+        <CrystalModel url="/models/crystal6.glb" timerFinished={timerFinished} isMobile={isMobile} />
       </group>
 
       {/* Spotlights with enhanced colors */}
@@ -233,6 +236,7 @@ export default function SceneComposition({
           )}
         </EffectComposer>
       )}
+      {showPerf && <Stats />}
     </scene>
   );
 }

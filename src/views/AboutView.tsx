@@ -88,7 +88,7 @@ export default function AboutView() {
   );
 
   const SkillsPanel = () => (
-    <div className="mt-3 max-h-[56vh] md:max-h-[55vh] overflow-y-auto pr-1">
+    <div className="mt-3 max-h-[48vh] md:max-h-[55vh] overflow-y-auto pr-1">
       <ul role="list" className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-3">
         {SKILLS.map((s) => (
           <li role="listitem" key={s.name}>
@@ -172,7 +172,7 @@ export default function AboutView() {
   );
 
   return (
-    <div className="absolute inset-0 z-20 w-full h-full flex items-start md:items-center justify-center pointer-events-auto contain-parent px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1rem)]">
+    <div className="w-full h-full flex items-start md:items-center justify-center pointer-events-auto contain-parent px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1rem)]">
       <div className="w-full min-h-full overflow-y-auto md:relative md:overflow-visible transition-all duration-300 contain-layout">
         {isMobile ? (
           <div className="flex flex-col overflow-auto justify-between gap-4 p-4 text-white h-full">

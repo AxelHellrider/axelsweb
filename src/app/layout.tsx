@@ -57,12 +57,12 @@ export default function RootLayout({
         <CanvasBackground />
         {/* UI toggle lives outside of chrome so it remains available when UI is hidden */}
         <UIChromeController />
-        <div className="ui-chrome absolute inset-0 z-20 pointer-events-none flex flex-col">
+        <div className="ui-chrome h-full flex flex-col">
           <Header />
           {/* Make content region positioning context for RouteTransition */}
           <div className="pointer-events-auto flex-1 min-h-0 relative">
             <RouteTransition>
-              <main id="main" role="main" className="h-full w-full overflow-auto overscroll-contain">
+              <main id="main" role="main" className="w-full h-full overscroll-contain">
                 {children}
               </main>
             </RouteTransition>
@@ -75,3 +75,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

@@ -19,6 +19,7 @@ const useIsMobile = (bp: number = 1024) => {
 export default function CanvasBackground() {
   const isMobile = useIsMobile();
   const [timerFinished, setTimerFinished] = useState(false);
+  const [showPerf, setShowPerf] = useState(false);
 
   // Determine viewport breakpoint
   const [viewport, setViewport] = useState<"mobile" | "tablet" | "desktop">("desktop");
@@ -51,6 +52,20 @@ export default function CanvasBackground() {
     return () => clearTimeout(t);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'p' || event.key === 'P') {
+        setShowPerf((prev) => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const glProps = useMemo(
     () => ({
       antialias: !isMobile,
@@ -79,6 +94,7 @@ export default function CanvasBackground() {
           enablePostProcessing={!isMobile}
           isMobile={isMobile}
           viewport={viewport}
+          showPerf={showPerf}
         />
         <AdaptiveDpr pixelated />
       </Canvas>
