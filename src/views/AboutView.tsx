@@ -25,14 +25,17 @@ const SKILLS = [
   { name: "HTML", level: 5 },
   { name: "CSS", level: 5 },
   { name: "JavaScript", level: 5 },
-  { name: "React", level: 4 },
-  { name: "Next.js", level: 3 },
+  { name: "Sass", level: 4 },
+  { name: "AngularJS", level: 3.5 },
+  { name: "TypeScript", level: 3 },
   { name: "Three.js", level: 3 },
   { name: "TailwindCSS", level: 3 },
-  { name: "Sass", level: 4 },
+  { name: "React", level: 3 },
   { name: "PHP", level: 3 },
   { name: "Phalcon PHP", level: 3 },
-  { name: "Node.js", level: 4 },
+  { name: "Node.js", level: 3 },
+  { name: "Next.js", level: 2 },
+  { name: "Express.js", level: 2 },
 ] as const;
 
 const EXPERIENCE = [
@@ -130,7 +133,7 @@ export default function AboutView() {
   );
 
   const AboutText = () => (
-    <section aria-labelledby="about-heading">
+    <section aria-labelledby="about-heading" className="rounded-xl bg-black/20 ring-1 ring-white/10 p-3">
       <h2 id="about-heading" className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
         About Me
       </h2>
@@ -148,7 +151,7 @@ export default function AboutView() {
   );
 
   const ExperiencePanel = () => (
-    <section className="mt-3 max-h-[50vh] md:max-h-[55vh] overflow-y-auto pr-1" aria-labelledby="experience-heading">
+    <section className="mt-3 max-h-[48vh] md:max-h-[55vh] overflow-y-auto pr-1" aria-labelledby="experience-heading">
       <h2 id="experience-heading" className="sr-only">Experience</h2>
       <div className="flex flex-col gap-3">
         {EXPERIENCE.map(x => (
@@ -173,7 +176,7 @@ export default function AboutView() {
 
   return (
     <div className="w-full h-full flex items-start md:items-center justify-center pointer-events-auto contain-parent px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1rem)]">
-      <div className="w-full min-h-full overflow-y-auto md:relative md:overflow-visible transition-all duration-300 contain-layout">
+      <div className="w-full min-h-full md:relative transition-all duration-300 contain-layout">
         {isMobile ? (
           <div className="flex flex-col overflow-auto justify-between gap-4 p-4 text-white h-full">
             <div className="flex flex-col gap-2 items-stretch">
