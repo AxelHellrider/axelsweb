@@ -3,13 +3,13 @@
 import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
+import { randFloat } from "three/src/math/MathUtils.js";
 
 interface ParticleBackgroundProps {
   enabled: boolean;
   count?: number;
   rotationSpeed?: number;
   color?: THREE.ColorRepresentation;
-  size?: number;
 }
 
 export default function ParticleBackground({
@@ -17,7 +17,6 @@ export default function ParticleBackground({
   count = 1000,
   rotationSpeed = 0.02,
   color = 0x88aaff,
-  size = 0.025,
 }: ParticleBackgroundProps) {
   const pointsRef = useRef<THREE.Points>(null!);
 
@@ -44,7 +43,7 @@ export default function ParticleBackground({
       </bufferGeometry>
       <pointsMaterial
         color={color}
-        size={size}
+        size={randFloat(0.025, 0.0300)}
         sizeAttenuation
         transparent
         blending={THREE.AdditiveBlending}

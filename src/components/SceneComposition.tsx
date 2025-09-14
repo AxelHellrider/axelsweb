@@ -7,6 +7,7 @@ import { EffectComposer, Bloom, SSAO, ChromaticAberration, GodRays } from "@reac
 import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
+import { randFloat } from "three/src/math/MathUtils.js";
 
 interface SceneContentProps {
   timerFinished: boolean;
@@ -117,22 +118,24 @@ export default function SceneComposition({
   const crystalGroupRef = useRef<THREE.Group>(null!);
 
   // Particle and effect tuning by viewport
-  const particleCount = 300;
-  const particleRotation = isMobile ? 0.015 : 0.02;
-  const particleColor = isMobile ? 0xaad4ff : 0x88aaff; // brighter blue on mobile
-  const particleSize = isMobile ? 0.03 : 0.025; // slightly bigger on mobile
+  const particleProps = {
+    count: 500,
+    rotation: 0.02,
+    color: 0xaad4ff,
+  };
+  
 
   // Spotlight intensity tuning per device
-  const spotIntensity = isMobile ? 14 : 26;
+  const spotIntensity = 26;
 
   // Post-processing quality tiers
-  const ssaoSamples = 16;
-  const ssaoIntensity = 16;
-  const bloomIntensity = 0.4;
+  const ssaoSamples = 24;
+  const ssaoIntensity = 12;
+  const bloomIntensity = 0.25;
   const chromaOffset: [number, number] = [0.0005, 0.0005];
-  const godraySamples = 36;
-  const godrayWeights = 0.4;
-  const ssaoColor = useMemo(() => new THREE.Color("#0000ff"), []);
+  const godraySamples = 32;
+  const godrayWeights = 0.333;
+  const ssaoColor = useMemo(() => new THREE.Color("#020630"), []);
 
   return (
     <scene ref={sceneRef}>
@@ -141,16 +144,16 @@ export default function SceneComposition({
         <pointLight
           ref={pointLight}
           position={[0, 0, 0]}
-          intensity={2}
-          color="#f5f5f5"
-          distance={1}
-          decay={2}
+          intensity={4}
+          color="#a1e4fd"
+          distance={2}
+          decay={2.5}
         />
 
         {/* Invisible mesh for GodRays light source */}
         <mesh ref={sunRef} position={[0, 0, 0]}>
           <sphereGeometry args={[0.0125, 8, 8]} />
-          <meshBasicMaterial color="#ffffff" transparent opacity={0} />
+          <meshBasicMaterial color="#0b387a" transparent opacity={0} />
         </mesh>
 
         {/* Crystal */}
@@ -192,26 +195,26 @@ export default function SceneComposition({
       />
 
       {/* Particle background */}
-      <ParticleBackground enabled={timerFinished} count={particleCount} rotationSpeed={particleRotation} color={particleColor} size={particleSize} />
+      <ParticleBackground enabled={timerFinished} count={particleProps.count} rotationSpeed={particleProps.rotation} color={particleProps.color} />
 
       {/* Enhanced Postprocessing */}
       {enablePostProcessing && (
         <EffectComposer multisampling={2} enableNormalPass={true}>
           <SSAO
-            samples={isMobile ? 8 : ssaoSamples}
+            samples={ssaoSamples}
             radius={0.6}
-            intensity={isMobile ? 8 : ssaoIntensity}
+            intensity={ssaoIntensity}
             luminanceInfluence={0.7}
             color={ssaoColor}
           ></SSAO>
           <Bloom
             mipmapBlur={false}
-            intensity={isMobile ? 0.2 : bloomIntensity}
+            intensity={bloomIntensity}
             luminanceThreshold={0.35}
-            luminanceSmoothing={0.9}
+            luminanceSmoothing={0.75}
           />
           <ChromaticAberration
-            offset={isMobile ? [0.0002, 0.0002] : chromaOffset}
+            offset={chromaOffset}
             radialModulation={true}
             modulationOffset={0.5}
           />
