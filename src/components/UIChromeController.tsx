@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 /**
  * UIChromeController shows a small floating toggle button that hides/shows

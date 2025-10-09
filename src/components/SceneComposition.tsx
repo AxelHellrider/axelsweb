@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useRef, useEffect, useState, useMemo } from "react";
-import CrystalModel from "./CrystalModel";
 import ParticleBackground from "./ParticleBackground";
 import { EffectComposer, Bloom, SSAO, ChromaticAberration, GodRays } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
-import { randFloat } from "three/src/math/MathUtils.js";
+import dynamic from 'next/dynamic';
+
+const CrystalModel = dynamic(() => import('./CrystalModel'), { ssr: false });
 
 interface SceneContentProps {
   timerFinished: boolean;
@@ -21,7 +22,6 @@ export default function SceneComposition({
   timerFinished,
   enablePostProcessing = true,
   isMobile = false,
-  viewport = "desktop"
 }: SceneContentProps) {
   const sceneRef = useRef<THREE.Scene>(null!);
   const spot1 = useRef<THREE.SpotLight>(null!);
@@ -123,7 +123,6 @@ export default function SceneComposition({
     rotation: 0.02,
     color: 0xaad4ff,
   };
-  
 
   // Spotlight intensity tuning per device
   const spotIntensity = 26;
@@ -157,7 +156,7 @@ export default function SceneComposition({
         </mesh>
 
         {/* Crystal */}
-        <CrystalModel url="/models/crystal6.glb" timerFinished={timerFinished} isMobile={isMobile} />
+        <CrystalModel url="/models/crystal6.glb" timerFinished={false} speedMultiplier={1}/>
       </group>
 
       {/* Spotlights with enhanced colors */}
