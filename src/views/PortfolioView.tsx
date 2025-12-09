@@ -41,6 +41,11 @@ export default function PortfolioView() {
       href: "https://fractaltales.netlify.app",
     },
     {
+        title: "CRealizr | D&D Toolkit",
+        description: "Toolkit for D&D 5th and D&D 5.5 Editions",
+        href: "https://crealizr.netlify.app",
+    },
+    {
       title: "Streamlit Fintech App Template",
       description: "Fintech App Template made on Workearly AI Summer School 2024.",
       href: "https://github.com/AxelHellrider/Streamlit-Fintech-App-Workearly-2024",
