@@ -10,28 +10,28 @@
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
-    "@react-three/drei": "10.7.3",
-    "@react-three/postprocessing": "3.0.4",
-    "framer-motion": "^12.23.12",
-    "next": "15.5.0",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/postprocessing": "^3.0.4",
+    "framer-motion": "^12.23.25",
+    "next": "^16.0.8",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "react-icons": "^5.5.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "3",
+    "@eslint/eslintrc": "^3",
     "@gltf-transform/cli": "^4.2.1",
     "@gltf-transform/functions": "^4.2.1",
-    "@next/bundle-analyzer": "^15.5.0",
-    "@tailwindcss/postcss": "4",
-    "@types/node": "20",
-    "@types/react": "19",
-    "@types/react-dom": "19",
+    "@next/bundle-analyzer": "^16.0.8",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "babel-plugin-glsl": "^1.0.0",
-    "eslint": "9",
-    "eslint-config-next": "15.5.0",
-    "leva": "^0.10.0",
-    "tailwindcss": "4",
-    "typescript": "5"
+    "eslint": "^9",
+    "eslint-config-next": "^16.0.8",
+    "leva": "^0.10.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
