@@ -13,7 +13,7 @@ const SOCIALS = [
 
 export default function ContactView() {
   return (
-    <div className="h-full w-full flex flex-col items-stretch justify-end md:items-center md:justify-center px-4">
+    <div className="h-full w-full flex flex-col items-stretch justify-center px-4 md:items-center">
       <motion.div
         initial={{ x: 40, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -24,12 +24,6 @@ export default function ContactView() {
       >
         <div className="flex items-center justify-between gap-3">
           <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Contact</h1>
-          <button
-            onClick={() => history.back()}
-            className="px-4 py-2 md:py-2.5 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0_15px_rgba(0,150,255,0.25)] focus-visible:ring-2 focus-visible:ring-sky-400/60 outline-none"
-          >
-            ← Back
-          </button>
         </div>
         <p className="mt-2 text-sm md:text-base text-white/80">
           I’d love to connect. Reach out via any of the links below.

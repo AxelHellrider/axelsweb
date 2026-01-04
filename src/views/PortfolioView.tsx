@@ -2,331 +2,150 @@
 import React, { useMemo, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-const useIsMobile = (bp: number = 1024) => {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= bp);
-    check();
-    window.addEventListener("resize", check, { passive: true });
-    return () => window.removeEventListener("resize", check);
-  }, [bp]);
-  return isMobile;
-};
-
-export default function PortfolioView() {
-   const isMobile = useIsMobile(768);
-   const sectionCard = "rounded-2xl p-5 bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0,0,30px_rgba(0,150,255,0.2)]";
-
-  type Project = {
+type Project = {
     title: string;
     description: string;
-    href: string; // github repo or website url
-    previewImage?: string; // optional explicit image override
-  };
+    href: string;
+    previewImage?: string;
+    stack: string[];
+};
 
-  const projects: Project[] = [
+const projects: Project[] = [
     {
-      title: "Personal Portfolio",
-      description: "Next.js  R3F experiments and UI showcases.",
-      href: "https://axelsweb.netlify.app",
+        title: "Axel's Web",
+        description: "Personal portfolio — custom frontend architecture, interactive visuals, performance-focused UI.",
+        href: "https://axelsweb.dev",
+        stack: ["Next.js", "React", "Three.js", "Tailwind CSS"],
     },
     {
-      title: "Danae Tsouroufli | Portfolio Website",
-      description: "Vue3 & static portfolio items serve.",
-      href: "https://danaetsouroufli.art",
+        title: "Danae Tsouroufli Portfolio",
+        description: "Vue-based portfolio website — clean layout, responsive design, visual-first presentation.",
+        href: "https://danaetsouroufli.art",
+        stack: ["Vue 3", "Vite", "CSS"],
     },
     {
-      title: "Fractal Tales",
-      description: "Micro-fiction blog, similar to Tumblr's SCP Foundation fiction.",
-      href: "https://fractaltales.netlify.app",
-    },
-    {
-        title: "CRealizr | D&D Toolkit",
-        description: "Toolkit for D&D 5th and D&D 5.5 Editions",
+        title: "CRealizr",
+        description: "D&D encounter toolkit — frontend-heavy UI with structured data visualization.",
         href: "https://crealizr.netlify.app",
+        stack: ["Next.js", "TypeScript", "Tailwind CSS"],
     },
     {
-      title: "Streamlit Fintech App Template",
-      description: "Fintech App Template made on Workearly AI Summer School 2024.",
-      href: "https://github.com/AxelHellrider/Streamlit-Fintech-App-Workearly-2024",
+        title: "Fractal Tales",
+        description: "Micro-fiction platform — minimal UI focused on readability and atmosphere.",
+        href: "https://fractaltales.netlify.app",
+        stack: ["Next.js", "Typescript", "Tailwind CSS", "Neon DB"],
     },
-  ];
+    {
+        title: "Streamlit Fintech Template",
+        description: "Fintech app template — rapid prototyping with data-oriented UI.",
+        href: "https://github.com/AxelHellrider/Streamlit-Fintech-App-Workearly-2024",
+        stack: ["Python", "Streamlit", "OpenAI API"],
+    },
+];
 
-  const getPreviewSrc = (href: string, explicit?: string) => {
+const getPreviewSrc = (href: string, explicit?: string) => {
     if (explicit) return explicit;
     try {
-      const url = new URL(href);
-      if (url.hostname.includes("github.com")) {
-        const [, owner, repo] = url.pathname.split("/");
-        if (owner && repo) {
-          const ghOg = `https://opengraph.githubassets.com/1/${owner}/${repo}`;
-          return `/api/og-image?url=${encodeURIComponent(ghOg)}`;
+        const url = new URL(href);
+        if (url.hostname.includes("github.com")) {
+            const [, owner, repo] = url.pathname.split("/");
+            if (owner && repo) {
+                const ghOg = `https://opengraph.githubassets.com/1/${owner}/${repo}`;
+                return `/api/og-image?url=${encodeURIComponent(ghOg)}`;
+            }
         }
-      }
-      return `/api/og-image?url=${encodeURIComponent(href)}`;
+        return `/api/og-image?url=${encodeURIComponent(href)}`;
     } catch {
-      return "/window.svg";
+        return "/window.svg";
     }
-  };
+};
 
-  const isSvgSrc = (src: string) => /\.svg($|\?)/i.test(src) || src.startsWith("/window.svg") || src.startsWith("/api/og-image");
+const isSvgSrc = (src: string) =>
+    /\.svg($|\?)/i.test(src) || src.startsWith("/window.svg") || src.startsWith("/api/og-image");
 
-  const PreviewImage = ({
-    href,
-    previewImage,
-    alt,
-    className,
-    sizes,
-    objectFit = "cover",
-  }: {
+const PreviewImage = ({href, previewImage, alt, className, sizes, objectFit = "cover",}: {
     href: string;
     previewImage?: string;
     alt: string;
     className?: string;
     sizes: string;
     objectFit?: "cover" | "contain";
-  }) => {
+}) => {
     const [failed, setFailed] = useState(false);
     const src = failed ? "/window.svg" : getPreviewSrc(href, previewImage);
     const svg = isSvgSrc(src);
     return (
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes={sizes}
-        className={`${className ?? ""} ${objectFit === "contain" ? "object-contain" : "object-cover"}`}
-        priority={false}
-        placeholder="empty"
-        onError={() => setFailed(true)}
-        unoptimized={svg}
-        loading={svg ? "eager" : "lazy"}
-      />
+        <Image src={src} alt={alt} fill sizes={sizes}
+                   className={`${className ?? ""} ${objectFit === "contain" ? "object-contain" : "object-cover"}`}
+                   priority={false} placeholder="empty" onError={() => setFailed(true)} unoptimized={svg}
+                   loading={svg ? "eager" : "lazy"}/>
     );
-  };
+};
 
-  const Header = () => (
-    <div className="flex flex-col gap-2">
-      <h2 className="text-2xl font-semibold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
-        Portfolio
-      </h2>
-      <p className="text-sm text-gray-300/90">
-        Selected works and experiments. Click a card to open the repo or live site.
-      </p>
-    </div>
-  );
-
-  const Items = () => (
-    <div className="mt-2 max-h-[50vh] md:max-h-[55vh] overflow-y-auto pr-1">
-      <ul role="list" aria-label="Projects grid" className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {projects.map((p) => (
-          <li key={p.title} role="listitem">
-            <a
-              href={p.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block rounded-xl bg:white/5 ring-1 ring-white/10 hover:bg-white/10 transition"
-              aria-label={`Open ${p.title}`}
-            >
-              <div className="p-3">
-                <div className="relative w-full aspect-video overflow-hidden rounded-lg ring-1 ring-white/10">
-                  <PreviewImage
-                    href={p.href}
-                    previewImage={p.previewImage}
-                    alt={`Preview image for ${p.title}`}
-                    className="transition duration-300 group-hover:scale-[1.02]"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    objectFit="contain"
-                  />
-                </div>
-                <div className="mt-3">
-                  <div className="text-sm font-medium text-white/95">{p.title}</div>
-                  <div className="text-xs text-gray-300/90 mt-0.5">{p.description}</div>
-                </div>
-              </div>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-
-  const MobileCoverflow = () => {
-    const items = useMemo(() => projects, []);
-    const CF_TILT_DEG = 22;
-    const CF_DEPTH_MAX = 72;
-    const CF_SCALE_CENTER = 1;
-    const CF_SCALE_EDGE = 0.92;
-    const CF_SHADOW_BASE = 0.2;
-    const CF_SHADOW_GAIN = 0.28;
-    const CF_EDGE_FADE_PX = 28;
-    const CF_ENABLE_AUTOSNAP = true;
-    const CF_AUTOSNAP_DELAY = 90;
-    const CF_ENABLE_AUTOPLAY = false;
-    const CF_AUTOPLAY_MODE: 'drift' | 'step' = 'drift';
-    const CF_AUTOPLAY_SPEED_PX_PER_S = 14;
-    const scrollerRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-      const el = scrollerRef.current;
-      if (!el) return;
-
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let snapTimer: number | null = null;
-      let raf = 0;
-      let userInteracting = false;
-      const slides = Array.from(el.querySelectorAll<HTMLAnchorElement>('a.cf-item'));
-
-      const update = () => {
-        const rect = el.getBoundingClientRect();
-        const center = rect.left + rect.width / 2;
-        for (const slide of slides) {
-          const inner = slide.querySelector<HTMLDivElement>(".cf-inner");
-          if (!inner) continue;
-          const srect = slide.getBoundingClientRect();
-          const slideCenter = srect.left + srect.width / 2;
-          const dx = (slideCenter - center) / (rect.width / 2);
-          const x = Math.max(-1, Math.min(1, dx));
-          const rotateY = x * -CF_TILT_DEG;
-          const scale = CF_SCALE_EDGE + (1 - Math.abs(x)) * (CF_SCALE_CENTER - CF_SCALE_EDGE);
-          const translateZ = (1 - Math.abs(x)) * CF_DEPTH_MAX;
-          const translateX = x * -10;
-          inner.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
-          inner.style.opacity = `${0.75 + (1 - Math.abs(x)) * 0.25}`;
-          const shadowOpacity = CF_SHADOW_BASE + (1 - Math.abs(x)) * CF_SHADOW_GAIN;
-          slide.style.filter = `drop-shadow(0 10px 25px rgba(0,0,0,${shadowOpacity}))`;
-        }
-      };
-
-      const snapToNearest = () => {
-        if (!CF_ENABLE_AUTOSNAP) return;
-        const rect = el.getBoundingClientRect();
-        const center = rect.left + rect.width / 2;
-        let best: { el: HTMLAnchorElement; dist: number } | null = null;
-        for (const slide of slides) {
-          const srect = slide.getBoundingClientRect();
-          const slideCenter = srect.left + srect.width / 2;
-          const dist = Math.abs(slideCenter - center);
-          if (!best || dist < best.dist) best = { el: slide, dist };
-        }
-        best?.el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      };
-
-      const debouncedSnap = () => {
-        if (!CF_ENABLE_AUTOSNAP) return;
-        if (snapTimer) window.clearTimeout(snapTimer);
-        snapTimer = window.setTimeout(snapToNearest, CF_AUTOSNAP_DELAY);
-      };
-
-      const onScroll = () => {
-        requestAnimationFrame(update);
-        if (!userInteracting) debouncedSnap();
-      };
-      update();
-      el.addEventListener("scroll", onScroll, { passive: true });
-      const onPointerDown: (ev: PointerEvent) => void = () => { userInteracting = true; if (snapTimer) { window.clearTimeout(snapTimer); snapTimer = null; } };
-      const onPointerUp: (ev: PointerEvent) => void = () => { userInteracting = false; debouncedSnap(); };
-      el.addEventListener('pointerdown', onPointerDown, { passive: true });
-      el.addEventListener('pointerup', onPointerUp);
-      window.addEventListener("resize", update);
-
-      const startDrift = () => {
-        if (!CF_ENABLE_AUTOPLAY || prefersReducedMotion || CF_AUTOPLAY_MODE !== 'drift') return;
-        const speedPerFrame = CF_AUTOPLAY_SPEED_PX_PER_S / 60;
-        const step = () => {
-          if (document.visibilityState !== 'visible' || userInteracting) {
-            raf = requestAnimationFrame(step);
-            return;
-          }
-          el.scrollLeft += speedPerFrame;
-          raf = requestAnimationFrame(step);
-        };
-        raf = requestAnimationFrame(step);
-      };
-      startDrift();
-
-      return () => {
-        el.removeEventListener("scroll", onScroll);
-        el.removeEventListener('pointerdown', onPointerDown);
-        el.removeEventListener('pointerup', onPointerUp);
-        window.removeEventListener("resize", update);
-        if (snapTimer) window.clearTimeout(snapTimer);
-        if (raf) cancelAnimationFrame(raf);
-      };
-    }, [CF_ENABLE_AUTOSNAP, CF_AUTOSNAP_DELAY, CF_ENABLE_AUTOPLAY, CF_AUTOPLAY_MODE, CF_AUTOPLAY_SPEED_PX_PER_S]);
+export default function PortfolioView() {
     return (
-      <div className="flex flex-col gap-3">
-        <Header />
-        <div
-          ref={scrollerRef}
-          className="relative -mx-4 px-4 overflow-x-auto scrollbar-hide scroll-smooth"
-          style={{ WebkitOverflowScrolling: "touch" }}
-        >
-          <div className="pointer-events-none absolute inset-y-0 left-0 bg-gradient-to-r from-black/30 to-transparent" style={{ width: CF_EDGE_FADE_PX }} />
-          <div className="pointer-events-none absolute inset-y-0 right-0 bg-gradient-to-l from-black/30 to-transparent" style={{ width: CF_EDGE_FADE_PX }} />
-          <div className="flex gap-4 py-2 snap-x snap-mandatory">
-            {items.map((p) => (
-              <a
-                key={p.title}
-                href={p.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cf-item snap-center shrink-0 w-[78vw] aspect-[16/10] rounded-2xl overflow-hidden perspective-[1000px]"
-              >
-                <div className="cf-inner relative w-full h-full [transform-style:preserve-3d] transition-[transform,opacity,filter] duration-300 ease-out will-change-transform">
-                  <PreviewImage
-                    href={p.href}
-                    previewImage={p.previewImage}
-                    alt={`Preview image for ${p.title}`}
-                    className="absolute inset-0 [backface-visibility:hidden]"
-                    sizes="78vw"
-                    objectFit="cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/30" />
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <div className="text-sm font-semibold text-white drop-shadow">{p.title}</div>
-                    <div className="text-[11px] text-white/80 line-clamp-2">{p.description}</div>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-        <button
-          onClick={() => history.back()}
-          className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0_0,15px_rgba(0,150,255,0.25)]"
-        >
-          ← Back
-        </button>
-      </div>
-    );
-  };
+        <section className="h-full overflow-auto px-4 py-8 md:px-8 max-w-7xl mx-auto text-white">
+            {/* Header */}
+            <header className="mb-8">
+                <h2 className="text-3xl font-semibold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
+                    Portfolio
+                </h2>
+                <p className="mt-2 text-sm text-gray-300 max-w-xl">
+                    Selected frontend and interactive projects, focused on clarity, performance, and
+                    thoughtful user experience.
+                </p>
+            </header>
 
-  return (
-      isMobile ? (
-        <div className="flex flex-col gap-4 px-4 py-4 text-white">
-          <MobileCoverflow />
-        </div>
-      ) : (
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-6 text-white px-6 py-6 transition-all duration-300 contain-parent">
-          <div className="flex flex-col gap-5">
-            <div className={sectionCard}>
-              <Header />
-            </div>
-          </div>
-          <div className="hidden lg:block" />
-          <div className="flex flex-col gap-5">
-            <div className={sectionCard}>
-              <Items />
-            </div>
-             <button
-               onClick={() => history.back()}
-               className="self-start px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 transition text-sm tracking-wide shadow-[0,0,15px_rgba(0,150,255,0.25)]"
-             >
-               ← Back
-             </button>
-          </div>
-        </div>
-      )
-  );
+            {/* Grid */}
+            <ul
+                role="list"
+                aria-label="Portfolio projects"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+                {projects.map((project) => (
+                    <li key={project.title}>
+                        <a
+                            href={project.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group block h-full rounded-2xl bg-black/40 ring-1 ring-white/10
+                         hover:ring-white/20 hover:bg-black/50 transition-colors"
+                        >
+                            <div className="relative aspect-video rounded-t-2xl overflow-hidden">
+                                <PreviewImage
+                                    href={project.href}
+                                    previewImage={project.previewImage}
+                                    alt={`Preview image for ${project.title}`}
+                                    className="transition duration-300 group-hover:scale-[1.02]"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                    objectFit="contain"
+                                />
+                            </div>
+
+                            <div className="p-4">
+                                <h3 className="text-sm font-medium text-white">
+                                    {project.title}
+                                </h3>
+                                <p className="mt-1 text-xs text-gray-300 leading-relaxed">
+                                    {project.description}
+                                </p>
+                                <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Tech stack">
+                                    {project.stack.map((tech) => (
+                                        <li
+                                            key={tech}
+                                            className="text-[10px] px-2 py-0.5 rounded-full
+                       bg-white/5 ring-1 ring-white/10
+                       text-gray-300"
+                                        >
+                                            {tech}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </section>
+    );
 }
