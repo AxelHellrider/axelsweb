@@ -62,6 +62,7 @@ export default function ContactView() {
                 <form
                     name="contact"
                     method="POST"
+                    action="/"
                     data-netlify="true"
                     netlify-honeypot="bot-field"
                     className="mt-6 flex flex-col gap-3"
