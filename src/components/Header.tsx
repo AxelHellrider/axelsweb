@@ -34,7 +34,7 @@ export default function Header() {
   return (
     <header role="banner" className="pointer-events-auto">
       <nav aria-label="Primary" className="mx-auto mt-3 md:mt-4 w-full px-4">
-        <div className="flex items-center justify-between gap-3 rounded-2xl bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_20px_rgba(0,150,255,0.2)] px-3 py-2">
+        <div className="flex items-center justify-between gap-3 rounded-2xl bg-black/60 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_20px_rgba(0,150,255,0.2)] px-3 py-2">
           <Link href="/" className="inline-flex items-center gap-2 px-2 py-1 rounded-md text-white/95 focus-visible:ring-2 focus-visible:ring-sky-400/60 outline-none">
             <span className="text-sm font-semibold tracking-wide">Alexandros Nomikos</span>
             <span className="hidden sm:inline text-[11px] text-white/70">Creative Coder</span>

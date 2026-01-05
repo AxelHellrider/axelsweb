@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function AboutView() {
     return (
-        <section className="h-full overflow-auto px-4 py-8 md:px-8 max-w-4xl mx-auto text-white">
+        <section className="h-full overflow-auto px-4 pt-4 md:px-8 max-w-4xl mx-auto text-white">
             {/* Header */}
             <header className="flex flex-col md:flex-row gap-6 items-start md:items-center mb-10">
                 <Image
@@ -25,7 +25,7 @@ export default function AboutView() {
             </header>
 
             {/* About */}
-            <section className="rounded-2xl bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_20px_rgba(0,150,255,0.2)] px-5 py-3 mb-10">
+            <section className="rounded-2xl bg-black/60 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_20px_rgba(0,150,255,0.2)] px-5 py-3 mb-10">
                 <p className="text-sm leading-relaxed text-gray-200/90">
                     I’m a frontend developer based in Greece, focused on building clean,
                     performant web interfaces and exploring interactive and 3D experiences
@@ -42,7 +42,7 @@ export default function AboutView() {
             </section>
 
             {/* Focus / Skills */}
-            <section className="rounded-2xl bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_20px_rgba(0,150,255,0.2)] px-5 py-3 mb-10">
+            <section className="rounded-2xl bg-black/60 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_20px_rgba(0,150,255,0.2)] px-5 py-3 mb-10">
                 <h2 className="text-lg font-medium mb-3">Focus & Skills</h2>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-200/90">
                     <li>Custom frontend development (React, Next.js, AngularJS)</li>
@@ -54,7 +54,7 @@ export default function AboutView() {
             </section>
 
             {/* Experience */}
-            <section className="rounded-2xl bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_20px_rgba(0,150,255,0.2)] px-5 py-3 mb-12">
+            <section className="rounded-2xl bg-black/60 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_20px_rgba(0,150,255,0.2)] px-5 py-3 mb-12">
                 <h2 className="text-lg font-medium mb-4">Experience</h2>
 
                 <div className="flex flex-col gap-5">

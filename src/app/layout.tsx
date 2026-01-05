@@ -62,7 +62,7 @@ export default function RootLayout({
           {/* Make content region positioning context for RouteTransition */}
           <div className="pointer-events-auto flex-1 min-h-0 relative">
             <RouteTransition>
-              <main id="main" role="main" className="w-full h-full overscroll-contain">
+              <main id="main" role="main" className="w-full h-full overscroll-contain overflow-hidden">
                 {children}
               </main>
             </RouteTransition>

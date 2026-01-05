@@ -27,21 +27,21 @@ const SERVICES = [
 
 export default function ServicesView() {
     return (
-        <div className="h-full flex items-center justify-center text-white p-4 sm:p-5 md:p-6">
-            <div
-                className="rounded-2xl p-5 md:p-6 bg-black/45 backdrop-blur-md ring-1 ring-white/10 shadow-[0_0_30px_rgba(0,150,255,0.2)] max-w-4xl w-full">
-                <div className="flex items-center justify-between gap-3">
-                    <div>
-                        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Services</h1>
-                        <p className="text-sm md:text-base text-white/80 mt-1">What I can help you build.</p>
-                    </div>
+        <div className="h-full overflow-auto flex flex-col items-stretch gap-y-3 text-white p-4 sm:p-5 md:p-6">
+            <div className="flex items-center justify-between gap-3">
+                <div>
+                    <h1 className="text-3xl font-semibold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">Services</h1>
+                    <p className="text-sm md:text-base text-white/80 mt-1">What I can help you build.</p>
                 </div>
+            </div>
+            <div
+                className="w-full">
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
-                    <ul role="list" aria-label="Service offerings" className="contents">
+                    <ul role="list" aria-label="Services offered" className="contents">
                         {SERVICES.map((s) => (
                             <li key={s.title} className="contents">
                                 <div
-                                    className="group rounded-xl p-4 md:p-5 ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition shadow-[0_0_20px_rgba(0,150,255,0.15)] focus-visible:ring-2 focus-visible:ring-sky-400/60 outline-none"
+                                    className="select-none group rounded-xl p-4 md:p-5 ring-1 ring-white/10 bg-black/60 hover:bg-black/45 transition shadow-[0_0_20px_rgba(0,150,255,0.15)] focus-visible:ring-2 focus-visible:ring-sky-400/60 outline-none"
                                     tabIndex={0}
                                     role="listitem"
                                     aria-label={s.title}
