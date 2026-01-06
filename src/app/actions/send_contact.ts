@@ -25,7 +25,7 @@ export async function sendContact(formData: FormData) {
 
     try {
         await resend.emails.send({
-            from: "Axels Web | <onboarding@resend.dev>",
+            from: "Axels Web | <contact@axelsweb.dev>",
             to: ["axelsweb@outlook.com"],
             replyTo: email,
             subject: `New contact from ${name}`,
