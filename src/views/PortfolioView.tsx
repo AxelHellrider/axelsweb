@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import {PROJECTS} from "@/constants/PROJECTS";
+import {BLUR_DATA_URL} from "@/constants/blur";
 
 export default function PortfolioView() {
     return (
@@ -24,7 +25,7 @@ export default function PortfolioView() {
                 aria-label="Portfolio projects"
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-                {PROJECTS.map((project) => (
+                {PROJECTS.map((project, index) => (
                     <li key={project.title}>
                         <a
                             href={project.href}
@@ -33,14 +34,27 @@ export default function PortfolioView() {
                             className="group block h-full rounded-2xl bg-black/60 ring-1 ring-white/10
                          hover:ring-white/20 hover:bg-black/50 transition-colors"
                         >
-                            <div className="relative aspect-video rounded-t-2xl overflow-hidden">
+                            <div className="relative aspect-video rounded-t-2xl overflow-hidden bg-white/5">
                                 <Image
                                     src={project.image ?? "/project_thumbs/placeholder.png"}
                                     alt={`Preview image for ${project.title}`}
                                     fill
                                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                                    className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                                />
+                                    placeholder="blur"
+                                    blurDataURL={BLUR_DATA_URL}
+                                    priority={index < 3}
+                                    className="
+                                      object-cover
+                                      transition
+                                      duration-500
+                                      ease-out
+                                      opacity-0
+                                      data-[loaded=true]:opacity-100
+                                      group-hover:scale-[1.02]
+                                    "
+                                    onLoadingComplete={(img) => {
+                                        img.dataset.loaded = "true";
+                                    }}                                />
                             </div>
 
                             <div className="p-4">

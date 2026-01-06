@@ -41,16 +41,18 @@ export default function ContactView() {
                     <p className="text-green-400 text-center">Message sent successfully. I’ll get back to you soon.</p>
                 ) : (
                     <form
-                        name="contact"
-                        method="POST"
                         action={action}
-                        className="mt-6 flex flex-col gap-3"
+                        className="flex flex-col gap-3"
                     >
-                        {/* Netlify required hidden input */}
-                        <input type="hidden" name="form-name" value="contact"/>
-                        <input type="hidden" name="bot-field"/>
+                        <input
+                            type="text"
+                            name="bot-field"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            className="hidden"
+                        />
 
-                        <label className="flex flex-col gap-1 text-sm">
+                        <label className="flex flex-col gap-2 text-sm">
                             <span className="text-white/80">Name</span>
                             <input
                                 name="name"
@@ -64,7 +66,7 @@ export default function ContactView() {
                             />
                         </label>
 
-                        <label className="flex flex-col gap-1 text-sm">
+                        <label className="flex flex-col gap-2 text-sm">
                             <span className="text-white/80">Email</span>
                             <input
                                 type="email"
@@ -79,7 +81,7 @@ export default function ContactView() {
                             />
                         </label>
 
-                        <label className="flex flex-col gap-1 text-sm">
+                        <label className="flex flex-col gap-2 text-sm">
                             <span className="text-white/80">Message</span>
                             <textarea
                                 name="message"
@@ -115,26 +117,32 @@ export default function ContactView() {
                 <div className="my-6 h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent"/>
 
                 {/* Alternative contact methods */}
-                <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {SOCIALS.map((s) => (
-                        <li key={s.label}>
-                            <a
-                                href={s.href}
-                                target={s.href.startsWith("http") ? "_blank" : undefined}
-                                rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                                className="flex items-center gap-3 rounded-lg px-3 py-2.5
+                <div className="flex flex-col gap-3">
+                    <h2 id="contact-subheading"
+                        className="text-xl font-semibold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
+                        Prefer something else?
+                    </h2>
+                    <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {SOCIALS.map((s) => (
+                            <li key={s.label}>
+                                <a
+                                    href={s.href}
+                                    target={s.href.startsWith("http") ? "_blank" : undefined}
+                                    rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                                    className="flex items-center gap-3 rounded-lg px-3 py-2.5
                            bg-white/5 ring-1 ring-white/10 hover:bg-white/10
                            transition focus-visible:ring-2 focus-visible:ring-sky-400/60"
-                            >
+                                >
                                 <span className="inline-flex h-7 w-7 items-center justify-center
                                                  rounded-md bg-sky-400/20 ring-1 ring-sky-400/30">
                                   <s.icon className="h-4 w-4 text-sky-200"/>
                                 </span>
-                                <span className="text-sm text-white/90">{s.label}</span>
-                            </a>
-                        </li>
-                    ))}
-                </ul>
+                                    <span className="text-sm text-white/90">{s.label}</span>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </motion.div>
         </section>
     );
