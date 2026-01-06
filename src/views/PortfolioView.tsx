@@ -1,45 +1,8 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
-
-type Project = {
-    title: string;
-    description: string;
-    href: string;
-    image: string;
-    stack: string[];
-};
-
-const projects: Project[] = [
-    {
-        title: "Danae Tsouroufli Portfolio",
-        description: "Vue-based portfolio website — clean layout, responsive design, visual-first presentation.",
-        href: "https://danaetsouroufli.art",
-        image: "/project_thumbs/project_danae.png",
-        stack: ["Vue 3", "Vite", "CSS"],
-    },
-    {
-        title: "CRealizr",
-        description: "D&D encounter toolkit — frontend-heavy UI with structured data visualization.",
-        href: "https://crealizr.netlify.app",
-        image: "/project_thumbs/project_crealizr.png",
-        stack: ["Next.js", "TypeScript", "Tailwind CSS"],
-    },
-    {
-        title: "Fractal Tales",
-        description: "Micro-fiction platform — minimal UI focused on readability and atmosphere.",
-        href: "https://fractaltales.netlify.app",
-        image: "/project_thumbs/project_microblog.png",
-        stack: ["Next.js", "Typescript", "Tailwind CSS", "Neon DB"],
-    },
-    {
-        title: "Streamlit Fintech Template",
-        description: "Fintech app template — rapid prototyping with data-oriented UI.",
-        href: "https://github.com/AxelHellrider/Streamlit-Fintech-App-Workearly-2024",
-        image: "/project_thumbs/project_streamlit.png",
-        stack: ["Python", "Streamlit", "OpenAI API"],
-    },
-];
+import {PROJECTS} from "@/constants/PROJECTS";
 
 export default function PortfolioView() {
     return (
@@ -61,7 +24,7 @@ export default function PortfolioView() {
                 aria-label="Portfolio projects"
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-                {projects.map((project) => (
+                {PROJECTS.map((project) => (
                     <li key={project.title}>
                         <a
                             href={project.href}

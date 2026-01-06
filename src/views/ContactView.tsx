@@ -3,32 +3,8 @@
 import React, {useState} from "react";
 import {motion} from "framer-motion";
 
-import {FaGithub, FaLinkedin, FaTelegram} from "react-icons/fa6";
-import {SiViber} from "react-icons/si";
 import {sendContact} from "@/app/actions/send_contact";
-
-const SOCIALS = [
-    {
-        label: "Telegram",
-        href: "https://t.me/alexnomikos",
-        icon: FaTelegram,
-    },
-    {
-        label: "Viber",
-        href: "viber://chat?number=+306986773963",
-        icon: SiViber,
-    },
-    {
-        label: "GitHub",
-        href: "https://github.com/AxelHellrider",
-        icon: FaGithub,
-    },
-    {
-        label: "LinkedIn",
-        href: "https://www.linkedin.com/in/alexandros-nomikos/",
-        icon: FaLinkedin,
-    },
-] as const;
+import {SOCIALS} from "@/constants/SOCIALS";
 
 export default function ContactView() {
     const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
