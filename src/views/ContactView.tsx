@@ -3,7 +3,6 @@
 import React, {useState} from "react";
 import {motion} from "framer-motion";
 
-import {MdEmail} from "react-icons/md";
 import {FaGithub, FaLinkedin, FaTelegram} from "react-icons/fa6";
 import {SiViber} from "react-icons/si";
 import {sendContact} from "@/app/actions/send_contact";
