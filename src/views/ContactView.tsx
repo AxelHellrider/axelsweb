@@ -62,7 +62,7 @@ export default function ContactView() {
                 <form
                     name="contact"
                     method="POST"
-                    action="/"
+                    action="/contact/success"
                     data-netlify="true"
                     netlify-honeypot="bot-field"
                     className="mt-6 flex flex-col gap-3"
@@ -141,10 +141,10 @@ export default function ContactView() {
                            bg-white/5 ring-1 ring-white/10 hover:bg-white/10
                            transition focus-visible:ring-2 focus-visible:ring-sky-400/60"
                             >
-                <span className="inline-flex h-7 w-7 items-center justify-center
-                                 rounded-md bg-sky-400/20 ring-1 ring-sky-400/30">
-                  <s.icon className="h-4 w-4 text-sky-200"/>
-                </span>
+                                <span className="inline-flex h-7 w-7 items-center justify-center
+                                                 rounded-md bg-sky-400/20 ring-1 ring-sky-400/30">
+                                  <s.icon className="h-4 w-4 text-sky-200"/>
+                                </span>
                                 <span className="text-sm text-white/90">{s.label}</span>
                             </a>
                         </li>
