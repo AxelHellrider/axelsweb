@@ -1,8 +1,6 @@
 "use client";
 
 import React, {useState} from "react";
-import {motion} from "framer-motion";
-
 import {sendContact} from "@/app/actions/send_contact";
 import {SOCIALS} from "@/constants/SOCIALS";
 
@@ -15,8 +13,7 @@ export default function ContactView() {
     }
 
     return (
-        <section
-            className="flex flex-col gap-y-4 w-full max-w-full h-full px-6 pt-6 pb-10 lg:py-6 overflow-x-hidden overflow-y-auto lg:max-w-2xl lg:mx-auto lg:justify-center">
+        <section className="flex flex-col gap-y-4 w-full max-w-full h-full px-6 py-10 lg:py-6 overflow-x-hidden overflow-y-auto lg:max-w-7xl lg:mx-auto ">
             <div className="flex flex-col gap-x-3">
                 <h1 id="contact-heading"
                     className="text-3xl font-semibold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
@@ -28,10 +25,7 @@ export default function ContactView() {
                 </p>
             </div>
 
-            <motion.div
-                initial={{y: 20, opacity: 0}}
-                animate={{y: 0, opacity: 1}}
-                transition={{duration: 0.3, ease: [0.22, 1, 0.36, 1]}}
+            <div
                 className="w-full rounded-2xl bg-black/60 backdrop-blur-md
                    ring-1 ring-white/10 shadow-[0_0_20px_rgba(0,150,255,0.25)]
                    p-4 text-white"
@@ -143,7 +137,7 @@ export default function ContactView() {
                         ))}
                     </ul>
                 </div>
-            </motion.div>
+            </div>
         </section>
     );
 }

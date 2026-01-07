@@ -60,14 +60,12 @@ export default function RootLayout({
         <div className="ui-chrome h-full flex flex-col">
           <Header />
           {/* Make content region positioning context for RouteTransition */}
-          <div className="pointer-events-auto flex-1 min-h-0 relative">
-            <RouteTransition>
-              <main id="main" role="main" className="w-full h-full overscroll-contain overflow-hidden">
-                {children}
-              </main>
-            </RouteTransition>
-          </div>
-          <Footer />
+            <div className="pointer-events-auto flex-1 min-h-0 relative">
+                <main id="main" role="main" className="w-full h-full overscroll-contain overflow-hidden">
+                    {children}
+                </main>
+            </div>
+            <Footer />
           {/* Move skip link inside chrome so it hides with UI */}
           <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-black/70 focus:text-white focus:px-3 focus:py-2 focus:rounded-md">Skip to content</a>
         </div>

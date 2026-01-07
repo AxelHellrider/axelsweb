@@ -7,7 +7,7 @@ import {BLUR_DATA_URL} from "@/constants/blur";
 
 export default function PortfolioView() {
     return (
-        <section className="h-full overflow-auto px-4 pt-4 pb-10 md:px-8 max-w-7xl mx-auto text-white">
+        <section className="flex flex-col gap-y-4 w-full max-w-full h-full px-6 py-10 lg:py-6 overflow-x-hidden overflow-y-auto lg:max-w-7xl lg:mx-auto ">
             {/* Header */}
             <header className="mb-8">
                 <h2 className="text-3xl font-semibold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">

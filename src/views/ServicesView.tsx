@@ -5,7 +5,7 @@ import {FOCUS_STYLES} from "@/constants/SERVICE_FOCUS";
 
 export default function ServicesView() {
     return (
-        <div className="h-full overflow-auto flex flex-col items-stretch gap-y-3 text-white p-6">
+        <section className="flex flex-col gap-y-4 w-full max-w-full h-full px-6 py-10 lg:py-6 overflow-x-hidden overflow-y-auto lg:max-w-7xl lg:mx-auto ">
             <div className="flex flex-col items-start justify-between gap-3">
                 <h1 className="text-3xl font-semibold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">Services</h1>
                 <p className="text-sm md:text-base text-white/80 mt-1">What I can help you build.</p>
@@ -45,6 +45,6 @@ export default function ServicesView() {
                     </ul>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
