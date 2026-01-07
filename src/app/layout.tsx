@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import CanvasBackground from "@/components/CanvasBackground";
-import RouteTransition from "@/components/RouteTransition";
 import Head from "next/head";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
