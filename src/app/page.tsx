@@ -11,8 +11,11 @@ export default function Home() {
                     </h1>
 
                     <p className="text-sm md:text-base text-white/85 mt-2 max-w-prose">
-                        Frontend developer focused on custom UI, performance, and thoughtful interaction —
-                        from production applications to experimental visual work.
+                        Frontend developer focused on custom UI, performance, and thoughtful interaction — from production applications to experimental visual work.
+                    </p>
+
+                    <p className="text-sm md:text-base text-white/85 mt-2 max-w-prose">
+                        I help small teams and individuals turn complex ideas into clean, interactive web experiences.
                     </p>
 
                     <ul className="mt-4 text-sm text-white/80 space-y-1">

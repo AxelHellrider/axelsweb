@@ -20,8 +20,7 @@ export default function ContactView() {
                     Contact
                 </h1>
                 <p className="mt-2 text-sm md:text-base text-white/80 max-w-prose">
-                    If you’d like to discuss a project, ask a question, or explore working together,
-                    feel free to send a message. I usually reply within a day or two.
+                    If you’d like to discuss a project, ask a question, or explore working together, feel free to send a message. I usually reply within a day or two.
                 </p>
             </div>
 
