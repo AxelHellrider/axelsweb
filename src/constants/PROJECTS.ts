@@ -4,7 +4,7 @@ export const PROJECTS: Project[] = [
     {
         title: "CRealizr",
         description: "Rules-aware toolkit for D&D 5e that helps DMs design fair, tense encounters without manual CR math.",
-        href: "https://crealizr.netlify.app",
+        href: "https://crealizr.net",
         image: "/project_thumbs/project_crealizr.png",
         stack: ["Next.js", "TypeScript", "Tailwind CSS"],
     },
