@@ -1,15 +1,21 @@
 "use client";
 
 import React, {useState} from "react";
+import Script from "next/script";
 import {sendContact} from "@/app/actions/send_contact";
 import {SOCIALS} from "@/constants/SOCIALS";
 
 export default function ContactView() {
     const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     async function action(formData: FormData) {
         const res = await sendContact(formData);
         setStatus(res.ok ? "success" : "error");
+        setErrorMessage(res.ok ? null : res.error ?? null);
+        if (!res.ok && typeof window !== "undefined" && window.turnstile) {
+            window.turnstile.reset();
+        }
     }
 
     return (
@@ -89,6 +95,12 @@ export default function ContactView() {
                             />
                         </label>
 
+                        <div
+                            className="cf-turnstile"
+                            data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                            data-action="contact"
+                        />
+
                         <button
                             type="submit"
                             className="mt-2 self-start rounded-xl px-4 py-2.5
@@ -100,11 +112,13 @@ export default function ContactView() {
                         </button>
                         {status === "error" && (
                             <p className="text-red-400 text-sm text-center">
-                                Something went wrong. Please try again.
+                                {errorMessage || "Something went wrong. Please try again."}
                             </p>
                         )}
                     </form>
                 )}
+
+                <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer/>
 
                 {/* Divider */}
                 <div className="my-6 h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent"/>
