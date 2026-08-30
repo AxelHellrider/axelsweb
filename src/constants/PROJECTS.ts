@@ -7,6 +7,7 @@ export const PROJECTS: Project[] = [
         href: "https://crealizr.net",
         image: "/project_thumbs/project_crealizr.png",
         stack: ["Next.js", "TypeScript", "Tailwind CSS"],
+        category: "personal",
     },
     {
         title: "Fractal Tales",
@@ -14,6 +15,7 @@ export const PROJECTS: Project[] = [
         href: "https://fractaltales.netlify.app",
         image: "/project_thumbs/project_microblog.png",
         stack: ["Next.js", "Typescript", "Tailwind CSS", "Neon DB"],
+        category: "personal",
     },
     {
         title: "Streamlit Fintech Prototype",
@@ -21,6 +23,7 @@ export const PROJECTS: Project[] = [
         href: "https://github.com/AxelHellrider/Streamlit-Fintech-App-Workearly-2024",
         image: "/project_thumbs/project_streamlit.png",
         stack: ["Python", "Streamlit", "OpenAI API"],
+        category: "personal",
     },
     {
         title: "Danae Tsouroufli | Portfolio Website",
@@ -28,5 +31,14 @@ export const PROJECTS: Project[] = [
         href: "https://danaetsouroufli.art",
         image: "/project_thumbs/project_danae.png",
         stack: ["Vue 3", "Vite", "CSS"],
+        category: "client",
+    },
+    {
+        title: "Γοργόνες & Μάγκες",
+        description: "Swimming pool facilities for baby swimming.",
+        href: "https://gorgoneskaimages.gr",
+        image: "/project_thumbs/project_gm.png",
+        stack: ["Wordpress", "PHP", "CSS"],
+        category: "client",
     },
 ];

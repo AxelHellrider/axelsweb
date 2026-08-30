@@ -2,6 +2,7 @@ export type Project = {
     title: string;
     description: string;
     href: string;
-    image: string;
+    image?: string;
     stack: string[];
+    category: "client" | "personal";
 };
