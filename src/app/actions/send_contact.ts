@@ -1,6 +1,6 @@
 "use server";
 
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 export async function sendContact(formData: FormData) {
     // Honeypot check
@@ -22,16 +22,25 @@ export async function sendContact(formData: FormData) {
     }
 
     try {
-        const resend = new Resend(process.env.RESEND_API_KEY);
-        await resend.emails.send({
-            from: "Axels Web <info@axelsweb.dev>",
-            to: ["info@axelsweb.com"],
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST || "smtp.hostinger.com",
+            port: Number(process.env.SMTP_PORT) || 465,
+            secure: true,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+            },
+        });
+
+        await transporter.sendMail({
+            from: `"Axels Web" <${process.env.SMTP_USER}>`,
+            to: "info@axelsweb.com",
             replyTo: email,
             subject: `New contact from ${name}`,
             text: `
                 Name: ${name}
                 Email: ${email}
-                
+
                 ${message}
             `,
         });
