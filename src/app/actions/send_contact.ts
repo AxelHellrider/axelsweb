@@ -2,8 +2,6 @@
 
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function sendContact(formData: FormData) {
     // Honeypot check
     if (formData.get("bot-field")) {
@@ -24,6 +22,7 @@ export async function sendContact(formData: FormData) {
     }
 
     try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
             from: "Axels Web <info@axelsweb.dev>",
             to: ["info@axelsweb.com"],
