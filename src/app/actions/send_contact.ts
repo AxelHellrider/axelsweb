@@ -34,7 +34,7 @@ export async function sendContact(formData: FormData) {
 
         await transporter.sendMail({
             from: `"Axels Web" <${process.env.SMTP_USER}>`,
-            to: "info@axelsweb.com",
+            to: process.env.SMTP_USER,
             replyTo: email,
             subject: `New contact from ${name}`,
             text: `
